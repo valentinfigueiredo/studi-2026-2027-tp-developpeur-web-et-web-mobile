@@ -1,0 +1,180 @@
+/* =====================================================================
+   Vite & Gourmand - Feuille de style (complète Bootstrap 5)
+   Charte graphique :
+     Bordeaux   #7A1F3D  couleur principale (vin de Bordeaux)
+     Bordeaux+  #5A1530  survol / états actifs
+     Crème      #FBF6EF  fond des pages
+     Crème+     #F3E8D8  fonds de sections
+     Or         #C8963E  accent décoratif (jamais pour du texte sur fond clair)
+     Sauge      #3F5A3B  régimes / succès
+     Encre      #2B2622  texte
+   Polices : Playfair Display (titres), Source Sans 3 (texte)
+   Contrastes vérifiés (RGAA 3.2) : texte >= 4.5:1.
+   ===================================================================== */
+
+:root {
+    --vg-bordeaux: #7A1F3D;
+    --vg-bordeaux-fonce: #5A1530;
+    --vg-creme: #FBF6EF;
+    --vg-creme-fonce: #F3E8D8;
+    --vg-or: #C8963E;
+    --vg-sauge: #3F5A3B;
+    --vg-encre: #2B2622;
+    --bs-body-font-family: 'Source Sans 3', system-ui, sans-serif;
+    --bs-body-color: var(--vg-encre);
+    --bs-body-bg: var(--vg-creme);
+    --bs-link-color-rgb: 122, 31, 61;
+    --bs-link-hover-color-rgb: 90, 21, 48;
+}
+
+body { font-size: 1.05rem; }
+
+h1, h2, h3, .h1, .h2, .h3, .navbar-brand, .atout-chiffre {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--vg-bordeaux);
+}
+.h5, .h6, h4, h5, h6 { color: var(--vg-encre); }
+
+/* Focus toujours visible pour la navigation au clavier (RGAA 10.7) */
+:focus-visible {
+    outline: 3px solid var(--vg-or) !important;
+    outline-offset: 2px;
+}
+
+.skip-link {
+    position: absolute;
+    top: .5rem;
+    left: .5rem;
+    z-index: 2000;
+    padding: .5rem 1rem;
+    background: #fff;
+    color: var(--vg-bordeaux);
+    font-weight: 700;
+}
+
+main:focus { outline: none; }
+
+/* ---------- Navigation ---------- */
+.bg-bordeaux { background-color: var(--vg-bordeaux) !important; }
+.navbar-brand { color: #fff !important; font-size: 1.4rem; }
+.navbar-dark .nav-link { color: #fff; }
+.navbar-dark .nav-link:hover,
+.navbar-dark .nav-link.active { color: #fff; text-decoration: underline; text-underline-offset: 6px; }
+
+/* ---------- Boutons ---------- */
+.btn-bordeaux {
+    --bs-btn-bg: var(--vg-bordeaux);
+    --bs-btn-border-color: var(--vg-bordeaux);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-bg: var(--vg-bordeaux-fonce);
+    --bs-btn-hover-border-color: var(--vg-bordeaux-fonce);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: var(--vg-bordeaux-fonce);
+    --bs-btn-active-color: #fff;
+}
+.btn-outline-bordeaux {
+    --bs-btn-color: var(--vg-bordeaux);
+    --bs-btn-border-color: var(--vg-bordeaux);
+    --bs-btn-hover-bg: var(--vg-bordeaux);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: var(--vg-bordeaux-fonce);
+    --bs-btn-active-color: #fff;
+}
+.btn-or {
+    --bs-btn-bg: var(--vg-or);
+    --bs-btn-border-color: var(--vg-or);
+    --bs-btn-color: var(--vg-encre);
+    --bs-btn-hover-bg: #b5832f;
+    --bs-btn-hover-color: var(--vg-encre);
+    font-weight: 600;
+}
+.btn-outline-or {
+    --bs-btn-color: var(--vg-encre);
+    --bs-btn-border-color: var(--vg-or);
+    --bs-btn-hover-bg: var(--vg-or);
+    --bs-btn-hover-color: var(--vg-encre);
+    --bs-btn-active-bg: var(--vg-or);
+    --bs-btn-active-color: var(--vg-encre);
+}
+
+/* ---------- Accueil ---------- */
+.hero { background: linear-gradient(135deg, var(--vg-creme-fonce), var(--vg-creme)); }
+.bg-creme-fonce { background: var(--vg-creme-fonce); }
+.card-atout { border: none; border-top: 4px solid var(--vg-or); }
+.atout-chiffre { font-size: 2.5rem; font-weight: 700; margin-bottom: .25rem; }
+.avis { border-left: 4px solid var(--vg-or); }
+.avis blockquote { font-style: italic; }
+.etoiles { color: #8a5d12; font-size: 1.2rem; letter-spacing: 2px; }
+
+/* ---------- Menus ---------- */
+.carte-menu { border: none; box-shadow: 0 2px 10px rgba(43, 38, 34, .08); transition: transform .15s; }
+.carte-menu:hover { transform: translateY(-3px); }
+.carte-menu .card-img-top { aspect-ratio: 3 / 2; object-fit: cover; height: auto; }
+.badge-theme { background: var(--vg-bordeaux); }
+.badge-regime { background: var(--vg-sauge); }
+.prix { font-weight: 700; font-size: 1.3rem; color: var(--vg-bordeaux); }
+.filtres { border: none; box-shadow: 0 2px 10px rgba(43, 38, 34, .08); }
+@media (min-width: 992px) { .filtres { position: sticky; top: 1rem; } }
+
+.alert-conditions {
+    background: #FFF4D6;
+    border: 2px solid var(--vg-or);
+    border-left-width: 8px;
+    color: var(--vg-encre);
+}
+.titre-categorie { border-bottom: 2px solid var(--vg-or); padding-bottom: .25rem; }
+.allergenes { color: #5c534d; }
+
+/* ---------- Formulaires ---------- */
+.regles-mdp { list-style: none; padding-left: 0; }
+.regles-mdp li::before { content: '○ '; }
+.regles-mdp li.ok { color: var(--vg-sauge); font-weight: 600; }
+.regles-mdp li.ok::before { content: '✓ '; }
+
+.suggestions { position: absolute; z-index: 10; left: calc(var(--bs-gutter-x) * .5); right: calc(var(--bs-gutter-x) * .5); }
+.suggestions .active { background: var(--vg-bordeaux); color: #fff; }
+.recap-prix { border: 2px solid var(--vg-bordeaux); }
+.recap-prix .total { font-size: 1.2rem; font-weight: 700; border-top: 1px solid #ddd; padding-top: .5rem; }
+.recap-sticky { top: 1rem; }
+
+/* Champ anti-spam invisible pour les humains, ignoré par les lecteurs d'écran */
+.pot-de-miel { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+/* ---------- Statuts de commande (texte + couleur, jamais la couleur seule) ---------- */
+.statut { font-size: .85rem; color: #fff; }
+.statut-en_attente { background: #8a5d12; }
+.statut-accepte, .statut-en_preparation { background: #1f5f8b; }
+.statut-en_cours_de_livraison, .statut-livre { background: #5b3f8c; }
+.statut-en_attente_retour_materiel { background: #a8461b; }
+.statut-terminee { background: var(--vg-sauge); }
+.statut-annulee { background: #6c6c6c; }
+
+.suivi li { position: relative; padding: 0 0 1rem 1.5rem; border-left: 2px solid var(--vg-or); margin-left: .5rem; }
+.suivi li::before { content: ''; position: absolute; left: -7px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--vg-bordeaux); }
+.suivi li:last-child { border-left-color: transparent; }
+
+.notation { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+/* ---------- Espace de gestion ---------- */
+.nav-staff .nav-link { color: var(--vg-bordeaux); }
+.nav-staff .nav-link.active { background: var(--vg-bordeaux); color: #fff; }
+.border-or { border: 2px solid var(--vg-or); }
+.avis-en_attente { background: #8a5d12; }
+.avis-valide { background: var(--vg-sauge); }
+.avis-refuse { background: #6c6c6c; }
+
+/* ---------- Pied de page ---------- */
+.footer { background: var(--vg-encre); color: #f5efe6; }
+.footer .h5 { color: var(--vg-or); font-family: 'Playfair Display', Georgia, serif; }
+.footer a { color: #f5efe6; }
+.footer a:hover { color: #fff; }
+.horaires li { display: flex; justify-content: space-between; max-width: 260px; }
+.horaires .jour { font-weight: 600; }
+
+.texte-legal { max-width: 860px; }
+.texte-legal h2 { font-size: 1.4rem; margin-top: 2rem; }
+
+/* Respect du réglage "réduire les animations" du système (RGAA 13.8) */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+}
