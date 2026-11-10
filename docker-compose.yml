@@ -1,0 +1,47 @@
+# Environnement de développement complet en une commande : docker compose up -d
+# Application : http://localhost:8000  |  Mails de test (Mailpit) : http://localhost:8025
+services:
+  app:
+    build: .
+    ports: ["8000:8080"]
+    environment:
+      APP_URL: http://localhost:8000
+      APP_DEBUG: "true"
+      DB_HOST: mysql
+      DB_NAME: vite_gourmand
+      DB_USER: vite_gourmand
+      DB_PASSWORD: dev-password
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB: vite_gourmand
+      MAIL_HOST: mailpit
+      MAIL_PORT: "1025"
+    depends_on:
+      mysql: { condition: service_healthy }
+      mongo: { condition: service_started }
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root-dev
+    volumes:
+      # Les scripts SQL sont exécutés automatiquement au premier démarrage
+      - ./database/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./database/02_data.sql:/docker-entrypoint-initdb.d/02_data.sql:ro
+      - ./database/03_droits.sql:/docker-entrypoint-initdb.d/03_droits.sql:ro
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot-dev"]
+      interval: 5s
+      retries: 20
+
+  mongo:
+    image: mongo:8
+    volumes: [mongo-data:/data/db]
+
+  mailpit:
+    image: axllent/mailpit
+    ports: ["8025:8025"]
+
+volumes:
+  mysql-data:
+  mongo-data:
