@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Charte graphique - Vite & Gourmand</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_pdf.css">
+<style>
+.palette { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.couleur { border: 1px solid #ddd; border-radius: 3mm; overflow: hidden; }
+.couleur .ech { height: 11mm; }
+.couleur div.info { padding: 2mm 3mm; font-size: 9.5pt; }
+.typo1 { font-family: 'Playfair Display', serif; font-size: 22pt; color: #7A1F3D; margin: 0; }
+.typo2 { font-family: 'Source Sans 3', sans-serif; font-size: 16pt; margin: 0; }
+.btn { display: inline-block; padding: 2.5mm 5mm; border-radius: 1.5mm; font-weight: 600; margin-right: 3mm; }
+.badge { display: inline-block; padding: 1mm 2.5mm; border-radius: 1.5mm; color: #fff; font-size: 9pt; font-weight: 700; margin: 0 1.5mm 1.5mm 0; }
+.ok { color: #3F5A3B; font-weight: 700; } .ko { color: #a8461b; font-weight: 700; }
+.logos { display: flex; gap: 10mm; align-items: center; }
+.logos div { padding: 6mm; border-radius: 3mm; }
+body { font-size: 10pt; } h2 { margin-top: 5mm; } th, td { padding: 1.2mm 2.5mm; } ul { margin: 1mm 0; }
+</style></head><body>
+
+<section class="page couverture">
+  <img src="../../public/assets/img/logo.svg" alt="">
+  <h1>Vite &amp; Gourmand</h1>
+  <p><strong>Charte graphique</strong><br>Application web de commande de menus traiteur</p>
+  <p class="petit">FastDev - Version 1.0 - Novembre 2026</p>
+</section>
+
+<section class="page">
+  <h2>1. Identité et intentions</h2>
+  <p>Vite &amp; Gourmand est un traiteur bordelais familial, présent depuis 25 ans. L'identité visuelle doit exprimer :</p>
+  <ul>
+    <li><strong>l'ancrage bordelais</strong> : un bordeaux profond, couleur du vin, en couleur principale ;</li>
+    <li><strong>la fête et la gourmandise</strong> : un or chaleureux en accent ;</li>
+    <li><strong>le fait maison et la fraîcheur</strong> : un fond crème doux et un vert sauge pour les menus végétariens et vegan ;</li>
+    <li><strong>le professionnalisme</strong> : une typographie élégante pour les titres, et très lisible pour le texte.</li>
+  </ul>
+
+  <h2>2. Logo</h2>
+  <div class="logos">
+    <div style="background:#FBF6EF"><img src="../../public/assets/img/logo.svg" alt="" style="width:18mm"></div>
+    <div style="background:#7A1F3D"><img src="../../public/assets/img/logo.svg" alt="" style="width:18mm"></div>
+    <div><p class="petit">Médaillon or, assiette crème et « V » bordeaux en forme de verre.<br>
+      Taille minimale : 32 px à l'écran.<br>Zone de protection : la moitié du diamètre tout autour.<br>
+      Utilisé avec le nom « Vite &amp; Gourmand » en Playfair Display.</p></div>
+  </div>
+
+  <h2>3. Palette de couleurs</h2>
+  <div class="palette">
+    <div class="couleur"><div class="ech" style="background:#7A1F3D"></div><div class="info"><strong>Bordeaux</strong> - couleur principale<br>#7A1F3D - RVB 122, 31, 61<br>En-tête, boutons, titres, prix</div></div>
+    <div class="couleur"><div class="ech" style="background:#5A1530"></div><div class="info"><strong>Bordeaux foncé</strong><br>#5A1530 - RVB 90, 21, 48<br>Survol et état actif des boutons</div></div>
+    <div class="couleur"><div class="ech" style="background:#C8963E"></div><div class="info"><strong>Or</strong> - accent<br>#C8963E - RVB 200, 150, 62<br>Décor, bouton secondaire, focus clavier</div></div>
+    <div class="couleur"><div class="ech" style="background:#FBF6EF"></div><div class="info"><strong>Crème</strong> - fond<br>#FBF6EF - RVB 251, 246, 239<br>Fond général des pages</div></div>
+    <div class="couleur"><div class="ech" style="background:#F3E8D8"></div><div class="info"><strong>Crème foncé</strong><br>#F3E8D8 - RVB 243, 232, 216<br>Fonds de sections alternées</div></div>
+    <div class="couleur"><div class="ech" style="background:#3F5A3B"></div><div class="info"><strong>Sauge</strong><br>#3F5A3B - RVB 63, 90, 59<br>Régimes alimentaires, succès</div></div>
+    <div class="couleur"><div class="ech" style="background:#2B2622"></div><div class="info"><strong>Encre</strong> - texte<br>#2B2622 - RVB 43, 38, 34<br>Texte courant, pied de page</div></div>
+  </div>
+</section>
+
+<section class="page">
+  <h2>4. Contrastes et accessibilité (RGAA 3.2)</h2>
+  <p>Le RGAA impose un contraste d'au moins <strong>4,5:1</strong> pour le texte courant (3:1 pour le texte de grande taille).</p>
+  <table>
+    <tr><th>Texte</th><th>Fond</th><th>Contraste</th><th>Conforme</th></tr>
+    <tr><td>Blanc</td><td>Bordeaux #7A1F3D</td><td>10,04:1</td><td class="ok">Oui</td></tr>
+    <tr><td>Bordeaux #7A1F3D</td><td>Crème #FBF6EF</td><td>9,34:1</td><td class="ok">Oui</td></tr>
+    <tr><td>Encre #2B2622</td><td>Crème #FBF6EF</td><td>13,92:1</td><td class="ok">Oui</td></tr>
+    <tr><td>Encre #2B2622</td><td>Or #C8963E</td><td>5,62:1</td><td class="ok">Oui</td></tr>
+    <tr><td>Or #C8963E</td><td>Encre #2B2622 (pied de page)</td><td>5,62:1</td><td class="ok">Oui</td></tr>
+    <tr><td>Blanc</td><td>Sauge #3F5A3B</td><td>7,67:1</td><td class="ok">Oui</td></tr>
+    <tr><td>Or #C8963E</td><td>Crème #FBF6EF</td><td>2,48:1</td><td class="ko">Non : or interdit pour du texte sur fond clair</td></tr>
+  </table>
+  <p class="petit">L'information n'est jamais portée par la couleur seule : chaque statut de commande est écrit en toutes lettres, et les règles du mot de passe sont précédées d'un symbole (○ / ✓).</p>
+
+  <h2>5. Typographies</h2>
+  <h3>Titres : Playfair Display (Google Fonts, licence libre OFL)</h3>
+  <p class="typo1">Réveillon de Noël</p>
+  <p class="petit">Graisses 600 et 700. Police à empattements, élégante, évoque la gastronomie et la fête. Réservée aux titres (h1 à h3), au nom de la marque et aux chiffres clés.</p>
+  <h3>Texte : Source Sans 3 (Google Fonts, licence libre OFL)</h3>
+  <p class="typo2">Commandez votre menu en ligne</p>
+  <p class="petit">Graisses 400, 600 et 700. Police sans empattement très lisible à l'écran, y compris en petite taille sur mobile. Taille de base : 1,05 rem (environ 17 px).</p>
+  <table>
+    <tr><th>Élément</th><th>Police</th><th>Taille (bureau)</th><th>Couleur</th></tr>
+    <tr><td>Titre h1</td><td>Playfair Display 700</td><td>2,5 rem</td><td>Bordeaux</td></tr>
+    <tr><td>Titre h2</td><td>Playfair Display 700</td><td>2 rem</td><td>Bordeaux</td></tr>
+    <tr><td>Texte courant</td><td>Source Sans 3 400</td><td>1,05 rem</td><td>Encre</td></tr>
+    <tr><td>Prix</td><td>Source Sans 3 700</td><td>1,3 rem</td><td>Bordeaux</td></tr>
+  </table>
+</section>
+
+<section class="page">
+  <h2>6. Composants d'interface</h2>
+  <h3>Boutons</h3>
+  <p><span class="btn" style="background:#7A1F3D;color:#fff">Commander ce menu</span>
+     <span class="btn" style="border:2px solid #7A1F3D;color:#7A1F3D">Modifier</span>
+     <span class="btn" style="background:#C8963E;color:#2B2622">Créer un compte</span></p>
+  <p class="petit">Principal (bordeaux) : une seule action principale par écran. Secondaire (contour) : actions annexes. Or : appel à l'inscription dans l'en-tête.</p>
+  <h3>Étiquettes</h3>
+  <p><span class="badge" style="background:#7A1F3D">Noël</span><span class="badge" style="background:#3F5A3B">Végétarien</span></p>
+  <h3>Statuts de commande</h3>
+  <p><span class="badge" style="background:#8a5d12">En attente de validation</span><span class="badge" style="background:#1f5f8b">Acceptée</span><span class="badge" style="background:#1f5f8b">En préparation</span><span class="badge" style="background:#5b3f8c">En cours de livraison</span><span class="badge" style="background:#5b3f8c">Livrée</span><span class="badge" style="background:#a8461b">En attente du retour de matériel</span><span class="badge" style="background:#3F5A3B">Terminée</span><span class="badge" style="background:#6c6c6c">Annulée</span></p>
+  <p class="petit">Tous ces badges ont un contraste supérieur à 5:1 avec le texte blanc.</p>
+  <h3>Encadré « Conditions du menu »</h3>
+  <div style="background:#FFF4D6;border:2px solid #C8963E;border-left-width:8px;padding:3mm 4mm;border-radius:2mm">
+    <strong>⚠️ Conditions de ce menu</strong><br>À commander au minimum 15 jours avant la prestation.</div>
+  <p class="petit">Exigence du client : les conditions doivent être impossibles à manquer. Fond jaune pâle, bordure or épaisse, pictogramme et titre explicite.</p>
+
+  <h2>7. Règles de mise en page</h2>
+  <ul>
+    <li><strong>Grille</strong> : grille Bootstrap de 12 colonnes, conteneur de 1 320 px au maximum.</li>
+    <li><strong>Mobile first</strong> : conçu d'abord pour 360 px de large ; points de rupture à 576, 768, 992 et 1 200 px.</li>
+    <li><strong>Espacements</strong> : multiples de 4 px (échelle Bootstrap : 4, 8, 16, 24, 48 px).</li>
+    <li><strong>Cartes</strong> : coins arrondis de 6 px, ombre légère, sans bordure.</li>
+    <li><strong>Focus clavier</strong> : contour or de 3 px, toujours visible.</li>
+    <li><strong>Images</strong> : format 3:2, WebP compressé, texte alternatif obligatoire.</li>
+  </ul>
+</section>
+</body></html>

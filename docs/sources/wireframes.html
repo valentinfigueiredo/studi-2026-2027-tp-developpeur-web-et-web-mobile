@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Wireframes</title>
+<style>
+@page { size: A4 landscape; margin: 10mm; }
+body { font-family: Arial, sans-serif; color: #333; margin: 0; }
+.p { page-break-after: always; display: flex; gap: 8mm; align-items: flex-start; }
+.p:last-child { page-break-after: auto; }
+h1 { font-size: 14pt; margin: 0 0 3mm; }
+.legende { width: 62mm; font-size: 9pt; }
+.legende ol { padding-left: 4mm; }
+.ecran { border: 2px solid #555; background: #fff; }
+.desk { width: 200mm; }
+.mob { width: 66mm; border-radius: 6mm; padding: 3mm 2mm; }
+.mob .b { margin: 1.2mm 2mm; padding: 1mm; }
+.b { background: #e4e4e4; border: 1px dashed #888; margin: 2mm; padding: 2mm; font-size: 8pt; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; }
+.b.d { background: #cfcfcf; }
+.row { display: flex; }
+.row > .b { flex: 1; }
+.n { position: absolute; top: -2mm; left: -2mm; background: #333; color: #fff; border-radius: 50%; width: 5mm; height: 5mm; font-size: 7pt; display: flex; align-items: center; justify-content: center; }
+.x { background: repeating-linear-gradient(45deg, #ddd, #ddd 4px, #eee 4px, #eee 8px); }
+</style></head><body>
+
+<!-- ACCUEIL -->
+<div class="p">
+  <div class="legende"><h1>Wireframe 1<br>Accueil (ordinateur)</h1><ol>
+    <li>En-tête : logo, Accueil, Nos menus, Contact, Connexion, Créer un compte</li>
+    <li>Accroche + bouton « Découvrir nos menus »</li><li>Illustration</li>
+    <li>Présentation de l'entreprise</li><li>Professionnalisme : 3 atouts chiffrés</li>
+    <li>Avis clients validés (note, commentaire, prénom)</li>
+    <li>Pied de page : adresse, horaires du lundi au dimanche, mentions légales, CGV</li></ol></div>
+  <div class="ecran desk">
+    <div class="b d" style="height:9mm"><span class="n">1</span>LOGO | Accueil · Nos menus · Contact &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Connexion [Créer un compte]</div>
+    <div class="row"><div class="b" style="height:32mm"><span class="n">2</span>TITRE H1<br>Texte d'accroche<br>[ Découvrir nos menus ]</div><div class="b x" style="height:32mm"><span class="n">3</span>Illustration</div></div>
+    <div class="b" style="height:13mm"><span class="n">4</span>Qui sommes-nous ? - paragraphe</div>
+    <div class="row"><div class="b" style="height:16mm"><span class="n">5</span>25 ans</div><div class="b" style="height:16mm">100 % fait maison</div><div class="b" style="height:16mm">7j/7</div></div>
+    <div class="row"><div class="b" style="height:19mm"><span class="n">6</span>★★★★★ Avis</div><div class="b" style="height:19mm">★★★★☆ Avis</div><div class="b" style="height:19mm">★★★★★ Avis</div></div>
+    <div class="row"><div class="b d" style="height:19mm"><span class="n">7</span>Adresse</div><div class="b d" style="height:19mm">Horaires lun. → dim.</div><div class="b d" style="height:19mm">Mentions légales · CGV · Contact</div></div>
+  </div>
+</div>
+<div class="p">
+  <div class="legende"><h1>Wireframe 2<br>Accueil (mobile)</h1><p>Mêmes blocs empilés sur une colonne (mobile first). Le menu se replie dans un bouton « hamburger » accessible (aria-expanded).</p></div>
+  <div class="ecran mob">
+    <div class="b d" style="height:8mm">LOGO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☰</div>
+    <div class="b" style="height:22mm">TITRE H1<br>Accroche<br>[ Découvrir nos menus ]</div>
+    <div class="b x" style="height:16mm">Illustration</div>
+    <div class="b" style="height:12mm">Qui sommes-nous ?</div>
+    <div class="b" style="height:9mm">25 ans</div><div class="b" style="height:9mm">100 % fait maison</div><div class="b" style="height:9mm">7j/7</div>
+    <div class="b" style="height:12mm">★ Avis 1</div><div class="b" style="height:12mm">★ Avis 2</div>
+    <div class="b d" style="height:22mm">Pied de page<br>Horaires<br>Liens légaux</div>
+  </div>
+</div>
+
+<!-- MENUS -->
+<div class="p">
+  <div class="legende"><h1>Wireframe 3<br>Vue globale des menus (ordinateur)</h1><ol>
+    <li>Filtres : prix min/max, thème, régime, nombre de convives</li>
+    <li>Nombre de résultats (annoncé aux lecteurs d'écran)</li>
+    <li>Cartes de menus : image, thème/régime, titre, description, nb de personnes minimum, prix, bouton « Voir le détail »</li></ol>
+    <p>La liste se met à jour sans rechargement de la page dès qu'un filtre change.</p></div>
+  <div class="ecran desk">
+    <div class="b d" style="height:9mm">EN-TÊTE</div>
+    <div class="b" style="height:7mm;justify-content:flex-start">H1 Nos menus</div>
+    <div class="row" style="align-items:flex-start">
+      <div class="b" style="flex:0 0 48mm;height:82mm;flex-direction:column"><span class="n">1</span>FILTRES<br><br>Prix min [ ] max [ ]<br><br>Thème [▼]<br><br>Régime [▼]<br><br>Convives [ ]<br><br>Réinitialiser</div>
+      <div style="flex:1">
+        <div class="b" style="height:6mm;justify-content:flex-start"><span class="n">2</span>5 menus trouvés</div>
+        <div class="row"><div class="b x" style="height:37mm;flex-direction:column"><span class="n">3</span>[image]<br>Thème · Régime<br>Titre<br>Description<br>8 pers. - 360 €<br>[Voir le détail]</div><div class="b x" style="height:37mm">Carte menu</div><div class="b x" style="height:37mm">Carte menu</div></div>
+        <div class="row"><div class="b x" style="height:37mm">Carte menu</div><div class="b x" style="height:37mm">Carte menu</div><div class="b" style="height:37mm;background:#fff;border:none"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="p">
+  <div class="legende"><h1>Wireframe 4<br>Vue globale des menus (mobile)</h1><p>Les filtres passent au-dessus de la liste ; les cartes s'affichent sur une colonne.</p></div>
+  <div class="ecran mob">
+    <div class="b d" style="height:8mm">LOGO ☰</div>
+    <div class="b" style="height:6mm">H1 Nos menus</div>
+    <div class="b" style="height:32mm;flex-direction:column">FILTRES<br>Prix min / max<br>Thème ▼<br>Régime ▼<br>Convives</div>
+    <div class="b" style="height:5mm">5 menus trouvés</div>
+    <div class="b x" style="height:30mm;flex-direction:column">[image]<br>Titre · 360 €<br>[Voir le détail]</div>
+    <div class="b x" style="height:22mm">Carte menu</div>
+  </div>
+</div>
+
+<!-- COMMANDE -->
+<div class="p">
+  <div class="legende"><h1>Wireframe 5<br>Commande (ordinateur)</h1><ol>
+    <li>Coordonnées du client (pré-remplies depuis le compte)</li>
+    <li>Menu choisi (pré-sélectionné depuis la fiche du menu)</li>
+    <li>Date, heure, adresse avec autocomplétion</li>
+    <li>Nombre de personnes (minimum du menu imposé) + prêt de matériel</li>
+    <li>Détail du prix mis à jour en direct : menu, réduction, livraison, total</li>
+    <li>Bouton de validation + lien vers les CGV</li></ol></div>
+  <div class="ecran desk">
+    <div class="b d" style="height:9mm">EN-TÊTE</div>
+    <div class="b" style="height:7mm;justify-content:flex-start">H1 Commander un menu</div>
+    <div style="width:130mm">
+      <div class="b" style="height:12mm;justify-content:flex-start"><span class="n">1</span>Marie Dupont · email · GSM - Modifier mes informations</div>
+      <div class="b" style="height:8mm;justify-content:flex-start"><span class="n">2</span>Menu [ Réveillon de Noël - 360 € pour 8 pers. ▼]</div>
+      <div class="row"><div class="b" style="height:8mm"><span class="n">3</span>Date [ ]</div><div class="b" style="height:8mm">Heure [ ]</div></div>
+      <div class="b" style="height:8mm;justify-content:flex-start">Adresse [ ............ ] ▸ suggestions</div>
+      <div class="row"><div class="b" style="height:8mm">CP [ ]</div><div class="b" style="height:8mm">Ville [ ]</div></div>
+      <div class="row"><div class="b" style="height:8mm"><span class="n">4</span>Nb personnes [ 13 ]</div><div class="b" style="height:8mm">☐ Prêt de matériel</div></div>
+      <div class="b" style="height:24mm;flex-direction:column;align-items:stretch;border:2px solid #333"><span class="n">5</span>Prix du menu ........ 585,00 €<br>Réduction 10 % ...... - 58,50 €<br>Livraison (5 km) ........ 7,95 €<br><b>Total ................ 534,45 €</b></div>
+      <div class="b d" style="height:9mm"><span class="n">6</span>[ VALIDER MA COMMANDE ]</div>
+    </div>
+  </div>
+</div>
+<div class="p">
+  <div class="legende"><h1>Wireframe 6<br>Commande (mobile)</h1><p>Formulaire en une colonne ; le détail du prix reste juste au-dessus du bouton de validation, pour que le client voie le total avant de valider.</p></div>
+  <div class="ecran mob">
+    <div class="b d" style="height:8mm">LOGO ☰</div>
+    <div class="b" style="height:6mm">H1 Commander</div>
+    <div class="b" style="height:10mm">Coordonnées</div>
+    <div class="b" style="height:7mm">Menu ▼</div>
+    <div class="b" style="height:7mm">Date</div><div class="b" style="height:7mm">Heure</div>
+    <div class="b" style="height:7mm">Adresse</div>
+    <div class="b" style="height:7mm">CP · Ville</div>
+    <div class="b" style="height:7mm">Nb personnes</div>
+    <div class="b" style="height:18mm;border:2px solid #333">Détail du prix<br>Total</div>
+    <div class="b d" style="height:8mm">[ VALIDER ]</div>
+  </div>
+</div>
+</body></html>

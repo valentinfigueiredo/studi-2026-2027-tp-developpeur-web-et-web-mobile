@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Manuel d'utilisation - Vite & Gourmand</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_pdf.css">
+<style>
+.cap { display: block; max-width: 100%; max-height: 120mm; margin: 3mm auto; border: 1px solid #ccc; }
+.etapes li { margin-bottom: 1.5mm; }
+.encadre { background: #F3E8D8; border-left: 5px solid #7A1F3D; padding: 3mm 4mm; margin: 3mm 0; }
+h2 { page-break-after: avoid; }
+</style></head><body>
+
+<section class="page couverture">
+  <img src="../../public/assets/img/logo.svg" alt="">
+  <h1>Vite &amp; Gourmand</h1>
+  <p><strong>Manuel d'utilisation</strong><br>Application web de commande de menus traiteur</p>
+  <p class="petit">Adresse de l'application : https://vite-et-gourmand.fly.dev (à remplacer par votre URL)</p>
+</section>
+
+<section class="page">
+  <h2>1. Présentation de l'application</h2>
+  <p>Vite &amp; Gourmand permet aux clients de consulter les menus du traiteur, de les commander en ligne et de suivre leur commande.
+     L'équipe gère les commandes, les menus et les avis depuis un espace dédié, et l'administrateur suit l'activité grâce à des statistiques.</p>
+  <table>
+    <tr><th>Profil</th><th>Ce qu'il peut faire</th></tr>
+    <tr><td>Visiteur</td><td>Consulter l'accueil, les menus et leur détail, contacter l'entreprise, créer un compte.</td></tr>
+    <tr><td>Utilisateur (client)</td><td>Commander, suivre, modifier ou annuler ses commandes, donner un avis, gérer son profil.</td></tr>
+    <tr><td>Employé</td><td>Gérer les commandes et leurs statuts, les menus, les plats et les horaires, et modérer les avis.</td></tr>
+    <tr><td>Administrateur</td><td>Tout ce que fait l'employé, plus la gestion des comptes employés et les statistiques.</td></tr>
+  </table>
+
+  <h2>2. Identifiants de test</h2>
+  <table>
+    <tr><th>Profil</th><th>Email (identifiant)</th><th>Mot de passe</th></tr>
+    <tr><td>Administrateur</td><td>jose@vite-gourmand.fr</td><td>Admin@Vite2026!</td></tr>
+    <tr><td>Employée</td><td>julie@vite-gourmand.fr</td><td>Employe@Vite2026!</td></tr>
+    <tr><td>Utilisateur</td><td>marie.dupont@example.com</td><td>Client@Vite2026!</td></tr>
+    <tr><td>Utilisateur</td><td>thomas.martin@example.com</td><td>Client@Vite2026!</td></tr>
+    <tr><td>Employé désactivé</td><td>ancien.employe@vite-gourmand.fr</td><td>Employe@Vite2026! (connexion refusée)</td></tr>
+  </table>
+  <div class="encadre">Le jeu de démonstration contient une commande à chaque étape importante : en attente (Marie), acceptée (Marie),
+    en attente de retour de matériel (Thomas), terminées avec avis, et une commande annulée.</div>
+
+  <h2>3. Parcours visiteur</h2>
+  <h3>Consulter et filtrer les menus</h3>
+  <ol class="etapes">
+    <li>Cliquez sur <strong>Nos menus</strong> dans le menu principal.</li>
+    <li>Utilisez les filtres à gauche : fourchette de prix, thème, régime, nombre de convives. La liste se met à jour automatiquement, sans rechargement.</li>
+    <li>Cliquez sur <strong>Voir le détail</strong> pour afficher la composition, les allergènes et les <strong>conditions</strong> du menu (encadré jaune).</li>
+  </ol>
+  <img class="cap" src="captures/menus-bureau.png" alt="">
+</section>
+
+<section class="page">
+  <h3>Créer un compte</h3>
+  <ol class="etapes">
+    <li>Cliquez sur <strong>Créer un compte</strong> en haut à droite.</li>
+    <li>Renseignez nom, prénom, téléphone, email, adresse et mot de passe. Les règles du mot de passe se cochent au fur et à mesure de la saisie.</li>
+    <li>Acceptez la politique de confidentialité, puis validez : vous êtes connecté et recevez un email de bienvenue.</li>
+  </ol>
+  <img class="cap" src="captures/inscription.png" alt="">
+  <h3>Mot de passe oublié</h3>
+  <p>Sur la page de connexion, cliquez sur <strong>Mot de passe oublié ?</strong> et saisissez votre email. Vous recevez un lien valable 1 heure pour choisir un nouveau mot de passe.</p>
+  <h3>Contacter l'entreprise</h3>
+  <p>Menu <strong>Contact</strong> : indiquez un titre, une description et votre email. La demande est transmise par email à l'entreprise, qui vous répond directement.</p>
+</section>
+
+<section class="page">
+  <h2>4. Parcours utilisateur (client)</h2>
+  <h3>Commander un menu</h3>
+  <ol class="etapes">
+    <li>Depuis le détail d'un menu, cliquez sur <strong>Commander ce menu</strong> (si vous n'êtes pas connecté, vous êtes invité à le faire).</li>
+    <li>Vos coordonnées et le menu sont pré-remplis. Indiquez la date, l'heure et l'adresse de livraison : commencez à taper l'adresse puis choisissez-la dans la liste.</li>
+    <li>Indiquez le nombre de personnes (au moins le minimum du menu). Le <strong>détail du prix</strong> se met à jour :
+      <ul><li>-10 % dès 5 personnes de plus que le minimum ;</li><li>livraison gratuite à Bordeaux, sinon 5 € + 0,59 € par km.</li></ul></li>
+    <li>Cliquez sur <strong>Valider ma commande</strong> : un email de confirmation vous est envoyé.</li>
+  </ol>
+  <img class="cap" src="captures/commande-bureau.png" alt="">
+</section>
+
+<section class="page">
+  <h3>Suivre, modifier ou annuler une commande</h3>
+  <ol class="etapes">
+    <li>Menu <strong>Mes commandes</strong>, puis <strong>Détail</strong>.</li>
+    <li>Tant que la commande est <em>en attente de validation</em>, les boutons <strong>Modifier la commande</strong> (tout sauf le menu) et <strong>Annuler la commande</strong> sont disponibles.</li>
+    <li>Une fois la commande acceptée, le <strong>suivi</strong> affiche chaque étape avec la date et l'heure.</li>
+  </ol>
+  <p class="petit">Testez avec Marie : commande CMD-2026-00003 (en attente) et CMD-2026-00002 (acceptée).</p>
+  <img class="cap" src="captures/espace-suivi.png" alt="">
+  <h3>Donner un avis</h3>
+  <p>Quand la commande est <strong>terminée</strong>, vous recevez un email. Dans le détail de la commande, choisissez une note de 1 à 5 et rédigez un commentaire. L'avis est publié sur l'accueil après validation par l'équipe.</p>
+  <h3>Mon profil</h3>
+  <p>Menu <strong>Mon profil</strong> : modifiez vos informations personnelles ou votre mot de passe.</p>
+</section>
+
+<section class="page">
+  <h2>5. Parcours employé</h2>
+  <p>Connectez-vous avec le compte de Julie : vous arrivez sur l'<strong>Espace de gestion</strong>.</p>
+  <h3>Gérer les commandes</h3>
+  <ol class="etapes">
+    <li>Filtrez les commandes par <strong>statut</strong> ou par <strong>client</strong> (nom, prénom ou email).</li>
+    <li>Cliquez sur <strong>Gérer</strong>, puis sur le bouton de l'étape suivante : Acceptée → En préparation → En cours de livraison → Livrée → Terminée (ou « En attente du retour de matériel » si du matériel a été prêté).</li>
+    <li>Le client est prévenu par email au passage « en attente du retour de matériel » (frais de 600 € sans restitution sous 10 jours ouvrés) et au passage « terminée » (invitation à donner son avis).</li>
+    <li>Pour <strong>annuler</strong> : contactez d'abord le client, puis indiquez le mode de contact (téléphone ou mail) et le motif, et cochez la confirmation.</li>
+  </ol>
+  <img class="cap" src="captures/employe-commande.png" alt="">
+</section>
+
+<section class="page">
+  <h3>Gérer les menus, plats et horaires</h3>
+  <ul>
+    <li><strong>Menus</strong> : ajoutez ou modifiez un menu (titre, description, thème, régime, minimum de personnes, prix, conditions, stock, plats) et ses photos, avec leur description pour les personnes malvoyantes. Un menu déjà commandé n'est pas supprimé mais archivé.</li>
+    <li><strong>Plats</strong> : créez un plat (entrée, plat, dessert) et cochez ses allergènes. Un même plat peut figurer dans plusieurs menus.</li>
+    <li><strong>Horaires</strong> : modifiez les horaires affichés dans le pied de page, ou cochez « Fermé ».</li>
+  </ul>
+  <img class="cap" src="captures/employe-menu.png" alt="">
+  <h3>Modérer les avis</h3>
+  <p>Menu <strong>Avis</strong> : les avis en attente apparaissent en premier. <strong>Valider</strong> les publie sur l'accueil, <strong>Refuser</strong> les masque.</p>
+</section>
+
+<section class="page">
+  <h2>6. Parcours administrateur</h2>
+  <p>Connectez-vous avec le compte de José. L'administrateur dispose de tout l'espace employé, ainsi que :</p>
+  <h3>Gérer les employés</h3>
+  <ol class="etapes">
+    <li>Menu <strong>Employés</strong> : renseignez prénom, nom, email et mot de passe du nouvel employé.</li>
+    <li>L'employé reçoit un email l'informant de la création de son compte. <strong>Le mot de passe n'y figure pas</strong> : communiquez-le lui de vive voix.</li>
+    <li>En cas de départ, cliquez sur <strong>Désactiver</strong> : l'employé ne peut plus se connecter, et sa session en cours est fermée.</li>
+  </ol>
+  <p class="petit">Pour des raisons de sécurité, aucun compte administrateur ne peut être créé depuis l'application.</p>
+  <h3>Statistiques et chiffre d'affaires</h3>
+  <p>Menu <strong>Statistiques</strong> : graphique du nombre de commandes par menu et tableau du chiffre d'affaires, filtrables par menu et par période. Les commandes annulées ne sont pas comptées.</p>
+  <img class="cap" src="captures/admin-stats.png" alt="">
+</section>
+</body></html>
