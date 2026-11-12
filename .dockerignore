@@ -1,0 +1,7 @@
+.git
+.env
+vendor
+storage/mails/*.html
+public/assets/img/menus/uploads
+docs/maquettes
+*.pdf
