@@ -17,12 +17,12 @@ final class Pricing
     public const SEUIL_REDUCTION = 5;          // personnes au-delà du minimum
 
     /**
-     * @param array $menu doit contenir prix_minimum et nombre_personne_minimum
+     * @param array $menu doit contenir prix_par_personne et nombre_personne_minimum
      */
     public static function calculer(array $menu, int $nombrePersonne, string $ville, float $distanceKm): array
     {
         $min = (int) $menu['nombre_personne_minimum'];
-        $prixParPersonne = (float) $menu['prix_minimum'] / $min;
+        $prixParPersonne = (float) $menu['prix_par_personne'];
 
         $prixMenu = round($prixParPersonne * $nombrePersonne, 2);
 

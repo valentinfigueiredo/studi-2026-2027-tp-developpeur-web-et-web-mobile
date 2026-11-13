@@ -23,7 +23,7 @@
                         <option value="">Choisissez un menu</option>
                         <?php foreach ($menus as $m): ?>
                             <option value="<?= (int) $m['menu_id'] ?>"
-                                    data-prix="<?= e($m['prix_minimum']) ?>"
+                                    data-prix="<?= e($m['prix_par_personne']) ?>"
                                     data-min="<?= (int) $m['nombre_personne_minimum'] ?>"
                                     <?= $menuId === (int) $m['menu_id'] ? 'selected' : '' ?>>
                                 <?= e($m['titre']) ?> - <?= money($m['prix_minimum']) ?> pour <?= (int) $m['nombre_personne_minimum'] ?> pers.

@@ -51,9 +51,9 @@
                 <?= field_error($errors, 'nombre_personne_minimum') ?>
             </div>
             <div class="col-sm-4">
-                <label for="prix_minimum" class="form-label">Prix pour ce minimum (€) <span aria-hidden="true">*</span></label>
-                <input type="number" min="0.01" step="0.01" class="form-control<?= aria_invalid($errors, 'prix_minimum') ?>" id="prix_minimum" name="prix_minimum" value="<?= old($data, 'prix_minimum') ?>" required>
-                <?= field_error($errors, 'prix_minimum') ?>
+                <label for="prix_par_personne" class="form-label">Prix par personne (€) <span aria-hidden="true">*</span></label>
+                <input type="number" min="0.01" step="0.01" class="form-control<?= aria_invalid($errors, 'prix_par_personne') ?>" id="prix_par_personne" name="prix_par_personne" value="<?= old($data, 'prix_par_personne') ?>" required>
+                <?= field_error($errors, 'prix_par_personne') ?>
             </div>
             <div class="col-sm-4">
                 <label for="quantite_restante" class="form-label">Stock (commandes possibles) <span aria-hidden="true">*</span></label>
@@ -78,7 +78,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="plats[]" id="plat-<?= (int) $p['plat_id'] ?>" value="<?= (int) $p['plat_id'] ?>"
                                     <?= in_array((int) $p['plat_id'], array_map('intval', $platsChoisis), true) ? 'checked' : '' ?>>
-                                <label class="form-check-label" for="plat-<?= (int) $p['plat_id'] ?>"><?= e($p['nom']) ?></label>
+                                <label class="form-check-label" for="plat-<?= (int) $p['plat_id'] ?>"><?= e($p['titre_plat']) ?></label>
                             </div>
                         <?php endforeach; ?>
                     </div>

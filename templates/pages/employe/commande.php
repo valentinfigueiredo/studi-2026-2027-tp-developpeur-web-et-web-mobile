@@ -33,7 +33,7 @@ if ($c['statut'] === 'livre') {
                         <dt class="col-sm-5">Date et heure</dt><dd class="col-sm-7"><?= e(date_fr($c['date_prestation'])) ?> à <?= e(heure_fr($c['heure_livraison'])) ?></dd>
                         <dt class="col-sm-5">Adresse</dt><dd class="col-sm-7"><?= e($c['adresse_prestation'] . ', ' . $c['code_postal'] . ' ' . $c['ville_prestation']) ?></dd>
                         <dt class="col-sm-5">Personnes</dt><dd class="col-sm-7"><?= (int) $c['nombre_personne'] ?></dd>
-                        <dt class="col-sm-5">Prêt de matériel</dt><dd class="col-sm-7"><?= $c['pret_materiel'] ? 'Oui' : 'Non' ?></dd>
+                        <dt class="col-sm-5">Prêt de matériel</dt><dd class="col-sm-7"><?= $c['pret_materiel'] ? 'Oui' . ($c['restitution_materiel'] ? ' (matériel restitué)' : ' (matériel non restitué)') : 'Non' ?></dd>
                         <dt class="col-sm-5">Total</dt><dd class="col-sm-7"><?= money($c['prix_total']) ?> (dont livraison <?= money($c['prix_livraison']) ?>)</dd>
                         <?php if ($c['statut'] === 'annulee'): ?>
                             <dt class="col-sm-5">Annulation</dt>

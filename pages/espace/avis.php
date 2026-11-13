@@ -30,7 +30,7 @@ if ($v->fails()) {
 } else {
     // Statut "en_attente" : l'avis ne sera visible qu'après validation par un employé (RG17)
     Database::run(
-        'INSERT INTO avis (commande_id, utilisateur_id, note, commentaire) VALUES (:c, :u, :n, :t)',
+        'INSERT INTO avis (commande_id, utilisateur_id, note, description) VALUES (:c, :u, :n, :t)',
         ['c' => $id, 'u' => Auth::id(), 'n' => (int) $_POST['note'], 't' => $commentaire]
     );
     flash('success', 'Merci pour votre avis ! Il sera publié après validation par notre équipe.');

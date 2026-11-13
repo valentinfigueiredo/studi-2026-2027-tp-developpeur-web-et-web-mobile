@@ -17,7 +17,7 @@
                 <tr>
                     <th scope="row"><?= e($m['titre']) ?></th>
                     <td><?= e($m['theme']) ?> / <?= e($m['regime']) ?></td>
-                    <td><?= money($m['prix_minimum']) ?> (<?= (int) $m['nombre_personne_minimum'] ?> pers.)</td>
+                    <td><?= money($m['prix_par_personne']) ?> / pers. (min. <?= (int) $m['nombre_personne_minimum'] ?>)</td>
                     <td><?= (int) $m['quantite_restante'] ?></td>
                     <td><?= $m['actif'] ? 'En vente' : 'Archivé' ?></td>
                     <td class="text-nowrap">

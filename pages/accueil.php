@@ -6,7 +6,7 @@ use App\Database;
 
 // Uniquement les avis validés par un employé (RG17)
 $avis = Database::run(
-    "SELECT a.note, a.commentaire, a.date_avis, u.prenom, LEFT(u.nom, 1) AS initiale, m.titre AS menu
+    "SELECT a.note, a.description, a.date_avis, u.prenom, LEFT(u.nom, 1) AS initiale, m.titre AS menu
      FROM avis a
      JOIN utilisateur u ON u.utilisateur_id = a.utilisateur_id
      JOIN commande c ON c.commande_id = a.commande_id

@@ -161,7 +161,8 @@ final class CommandeService
     public static function trouver(int $id, ?int $utilisateurId = null): ?array
     {
         $sql = 'SELECT c.*, m.titre AS menu_titre, m.conditions AS menu_conditions,
-                       m.nombre_personne_minimum, m.prix_minimum,
+                       m.nombre_personne_minimum, m.prix_par_personne,
+                       m.prix_par_personne * m.nombre_personne_minimum AS prix_minimum,
                        u.prenom, u.nom, u.email, u.telephone,
                        a.avis_id, a.note AS avis_note, a.statut AS avis_statut
                 FROM commande c
@@ -279,6 +280,10 @@ final class CommandeService
         $pdo->beginTransaction();
         try {
             Database::run('UPDATE commande SET statut = :s WHERE commande_id = :id', ['s' => $nouveau, 'id' => $commande['commande_id']]);
+            // Passage de « retour de matériel » à « terminée » : le matériel a été restitué
+            if ($commande['statut'] === 'en_attente_retour_materiel' && $nouveau === 'terminee') {
+                Database::run('UPDATE commande SET restitution_materiel = 1 WHERE commande_id = :id', ['id' => $commande['commande_id']]);
+            }
             Database::run(
                 'INSERT INTO suivi_commande (commande_id, statut, modifie_par) VALUES (:id, :s, :emp)',
                 ['id' => $commande['commande_id'], 's' => $nouveau, 'emp' => $employeId]
