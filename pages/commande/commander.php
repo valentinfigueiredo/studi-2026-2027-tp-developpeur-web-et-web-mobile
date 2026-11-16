@@ -8,7 +8,7 @@ use App\Database;
 use App\MenuRepository;
 
 $client = Database::run(
-    'SELECT prenom, nom, email, telephone, adresse, code_postal, ville FROM utilisateur WHERE utilisateur_id = :id',
+    'SELECT prenom, nom, email, telephone, adresse_postale, code_postal, ville FROM utilisateur WHERE utilisateur_id = :id',
     ['id' => Auth::id()]
 )->fetch();
 
@@ -18,7 +18,7 @@ $errors = [];
 
 // Valeurs par défaut : l'adresse du compte (modifiable pour livrer ailleurs)
 $data = [
-    'adresse_prestation' => $client['adresse'],
+    'adresse_prestation' => $client['adresse_postale'],
     'code_postal'        => $client['code_postal'],
     'ville_prestation'   => $client['ville'],
     'nombre_personne'    => '',

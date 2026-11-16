@@ -63,10 +63,10 @@ def last_mail():
 print('1. Inscription')
 c = Client()
 s, html, _ = c.post('/inscription', {'prenom': 'Léa', 'nom': 'Bernard', 'email': 'lea@test.fr', 'telephone': '06 11 22 33 44',
-    'adresse': '1 rue X', 'code_postal': '33000', 'ville': 'Bordeaux', 'password': 'faible', 'password_confirmation': 'faible', 'rgpd': '1'})
+    'adresse_postale': '1 rue X', 'code_postal': '33000', 'ville': 'Bordeaux', 'password': 'faible', 'password_confirmation': 'faible', 'rgpd': '1'})
 check(s == 200 and '10 caractères' in html, 'mot de passe faible refusé')
 s, html, loc = c.post('/inscription', {'prenom': '<script>alert(1)</script>', 'nom': 'Bernard', 'email': 'lea@test.fr', 'telephone': '06 11 22 33 44',
-    'adresse': '1 rue X', 'code_postal': '33000', 'ville': 'Bordeaux', 'password': 'Solide#Pass2026', 'password_confirmation': 'Solide#Pass2026', 'rgpd': '1'})
+    'adresse_postale': '1 rue X', 'code_postal': '33000', 'ville': 'Bordeaux', 'password': 'Solide#Pass2026', 'password_confirmation': 'Solide#Pass2026', 'rgpd': '1'})
 check(s == 302 and loc.endswith('/espace'), 'inscription valide -> espace')
 check(sql("SELECT r.libelle FROM utilisateur u JOIN role r USING(role_id) WHERE email='lea@test.fr'") == 'utilisateur', 'rôle utilisateur imposé')
 check(sql("SELECT password FROM utilisateur WHERE email='lea@test.fr'").startswith('$2y$12$'), 'mot de passe haché bcrypt')
@@ -147,6 +147,8 @@ e.post('/employe/commande', {'id': '3', 'action': 'annuler', 'motif': 'Rupture p
 check(sql('SELECT statut, mode_contact FROM commande WHERE commande_id=3') == 'annulee\ttelephone', 'annulation employé avec motif + contact')
 e.post('/employe/commande', {'id': '4', 'action': 'statut', 'statut': 'terminee'}, form_page='/employe/commande?id=4')
 check(sql('SELECT statut FROM commande WHERE commande_id=4') == 'terminee' and 'avis' in last_mail(), 'matériel rendu -> terminée + mail demande d\'avis')
+check(sql('SELECT restitution_materiel FROM commande WHERE commande_id=4') == '1', 'restitution_materiel passe à vrai (MCD)')
+check(sql("SELECT pays FROM utilisateur WHERE email='lea@test.fr'") == 'France', 'pays par défaut enregistré (MCD)')
 for st in ['en_cours_de_livraison', 'livre', 'terminee']:
     e.post('/employe/commande', {'id': '2', 'action': 'statut', 'statut': st}, form_page='/employe/commande?id=2')
 check(sql('SELECT statut FROM commande WHERE commande_id=2') == 'terminee', 'livrée sans matériel -> terminée')
@@ -166,23 +168,23 @@ s, html, _ = Client().get('/'); check('Entrecôte parfaite' in html, 'avis valid
 print('8. Menus (CRUD + upload)')
 png = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'public/assets/img/menus/vegan-1.webp'), 'rb').read()
 s, html, loc = e.post('/employe/menu', {'action': 'enregistrer', 'titre': 'Menu test', 'description': 'Desc', 'theme_id': '3', 'regime_id': '2',
-    'nombre_personne_minimum': '2', 'prix_minimum': '50', 'conditions': '48h avant', 'quantite_restante': '3', 'plats[]': ['2', '7'], 'texte_alt': 'Un bol'},
+    'nombre_personne_minimum': '2', 'prix_par_personne': '25', 'conditions': '48h avant', 'quantite_restante': '3', 'plats[]': ['2', '7'], 'texte_alt': 'Un bol'},
     form_page='/employe/menu', files={'image': ('photo.webp', png, 'image/webp')})
 mid = sql("SELECT menu_id FROM menu WHERE titre='Menu test'")
 check(mid != '' and sql(f'SELECT COUNT(*) FROM menu_plat WHERE menu_id={mid}') == '2', 'menu créé avec 2 plats')
 check(sql(f'SELECT chemin FROM menu_image WHERE menu_id={mid}').startswith('assets/img/menus/uploads/'), 'image envoyée et renommée')
 s, html, _ = e.post('/employe/menu', {'action': 'enregistrer', 'menu_id': mid, 'titre': 'Menu test', 'description': 'Desc', 'theme_id': '3', 'regime_id': '2',
-    'nombre_personne_minimum': '2', 'prix_minimum': '50', 'conditions': '48h', 'quantite_restante': '3', 'plats[]': ['2'], 'texte_alt': 'x'},
+    'nombre_personne_minimum': '2', 'prix_par_personne': '25', 'conditions': '48h', 'quantite_restante': '3', 'plats[]': ['2'], 'texte_alt': 'x'},
     form_page=f'/employe/menu?id={mid}', files={'image': ('shell.php.webp', b'<?php system($_GET["c"]); ?>', 'image/webp')})
 check('Format refusé' in html, 'faux fichier image (PHP) refusé')
-s, html, _ = Client().get('/api/menus?prix_max=60'); check('Menu test' in html, 'nouveau menu visible dans la vue globale')
+s, html, _ = Client().get('/api/menus?prix_max=60'); check('Menu test' in html and '"prix":50' in html, 'nouveau menu visible dans la vue globale')
 e.post('/employe/menus', {'action': 'supprimer', 'menu_id': mid}, form_page='/employe/menus')
 check(sql(f'SELECT COUNT(*) FROM menu WHERE menu_id={mid}') == '0', 'menu sans commande supprimé')
 e.post('/employe/menus', {'action': 'supprimer', 'menu_id': '5'}, form_page='/employe/menus')
 check(sql('SELECT actif FROM menu WHERE menu_id=5') == '0', 'menu déjà commandé archivé (pas supprimé)')
 e.post('/employe/menus', {'action': 'reactiver', 'menu_id': '5'}, form_page='/employe/menus')
-s, _, _ = e.post('/employe/plats', {'action': 'enregistrer', 'plat_id': '0', 'nom': 'Soupe test', 'type_plat': 'entree', 'allergenes[]': ['9', '7']}, form_page='/employe/plats')
-check(sql("SELECT COUNT(*) FROM plat_allergene pa JOIN plat p USING(plat_id) WHERE p.nom='Soupe test'") == '2', 'plat créé avec allergènes')
+s, _, _ = e.post('/employe/plats', {'action': 'enregistrer', 'plat_id': '0', 'titre_plat': 'Soupe test', 'type_plat': 'entree', 'allergenes[]': ['9', '7']}, form_page='/employe/plats')
+check(sql("SELECT COUNT(*) FROM plat_allergene pa JOIN plat p USING(plat_id) WHERE p.titre_plat='Soupe test'") == '2', 'plat créé avec allergènes')
 
 print('9. Administrateur')
 a = Client(); a.login('jose@vite-gourmand.fr', 'Admin@Vite2026!')

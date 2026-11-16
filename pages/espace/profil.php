@@ -9,7 +9,7 @@ use App\Validator;
 $id = Auth::id();
 $errors = [];
 $user = Database::run(
-    'SELECT prenom, nom, email, telephone, adresse, code_postal, ville, password FROM utilisateur WHERE utilisateur_id = :id',
+    'SELECT prenom, nom, email, telephone, adresse_postale, code_postal, ville, pays, password FROM utilisateur WHERE utilisateur_id = :id',
     ['id' => $id]
 )->fetch();
 $data = $user;
@@ -24,19 +24,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'nom'         => trim($_POST['nom'] ?? ''),
             'email'       => mb_strtolower(trim($_POST['email'] ?? '')),
             'telephone'   => Validator::normalizePhone($_POST['telephone'] ?? ''),
-            'adresse'     => trim($_POST['adresse'] ?? ''),
+            'adresse_postale'     => trim($_POST['adresse_postale'] ?? ''),
             'code_postal' => trim($_POST['code_postal'] ?? ''),
             'ville'       => trim($_POST['ville'] ?? ''),
+            'pays'        => trim($_POST['pays'] ?? '') ?: 'France',
         ];
         $v = (new Validator())
             ->required('prenom', $data['prenom'], 'Prénom')
             ->required('nom', $data['nom'], 'Nom')
             ->required('email', $data['email'], 'Email')
             ->email('email', $data['email'])
-            ->phone('telephone', $data['telephone']);
+            ->phone('telephone', $data['telephone'])
+            ->maxLength('pays', $data['pays'], 100, 'Pays');
         if ($estClient) {
             $v->required('telephone', $data['telephone'], 'Téléphone')
-              ->required('adresse', $data['adresse'], 'Adresse')
+              ->required('adresse_postale', $data['adresse_postale'], 'Adresse')
               ->custom('code_postal', (bool) preg_match('/^\d{5}$/', $data['code_postal']), 'Le code postal doit contenir 5 chiffres.')
               ->required('ville', $data['ville'], 'Ville');
         }
@@ -48,11 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             Database::run(
                 'UPDATE utilisateur SET prenom = :prenom, nom = :nom, email = :email, telephone = :tel,
-                    adresse = :adresse, code_postal = :cp, ville = :ville WHERE utilisateur_id = :id',
+                    adresse_postale = :adresse_postale, code_postal = :cp, ville = :ville, pays = :pays WHERE utilisateur_id = :id',
                 [
                     'prenom' => $data['prenom'], 'nom' => $data['nom'], 'email' => $data['email'],
-                    'tel' => $data['telephone'] ?: null, 'adresse' => $data['adresse'] ?: null,
-                    'cp' => $data['code_postal'] ?: null, 'ville' => $data['ville'] ?: null, 'id' => $id,
+                    'tel' => $data['telephone'] ?: null, 'adresse_postale' => $data['adresse_postale'] ?: null,
+                    'cp' => $data['code_postal'] ?: null, 'ville' => $data['ville'] ?: null, 'pays' => $data['pays'], 'id' => $id,
                 ]
             );
             $_SESSION['user']['prenom'] = $data['prenom'];

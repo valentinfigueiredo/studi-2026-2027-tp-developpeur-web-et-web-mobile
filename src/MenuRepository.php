@@ -9,6 +9,11 @@ namespace App;
  */
 final class MenuRepository
 {
+    /*
+     * Le MCD stocke le prix PAR PERSONNE. Le prix « à partir de » affiché aux clients
+     * (prix pour le nombre minimum de personnes) est calculé dans les requêtes : alias prix_minimum.
+     */
+
     /**
      * Vue globale filtrée. Chaque filtre ajoute une condition AVEC un paramètre lié :
      * la requête reste dynamique sans jamais concaténer une saisie utilisateur dans le SQL.
@@ -19,11 +24,11 @@ final class MenuRepository
         $params = [];
 
         if (isset($f['prix_max']) && $f['prix_max'] !== '') {
-            $where[] = 'm.prix_minimum <= :prix_max';
+            $where[] = 'm.prix_par_personne * m.nombre_personne_minimum <= :prix_max';
             $params['prix_max'] = (float) $f['prix_max'];
         }
         if (isset($f['prix_min']) && $f['prix_min'] !== '') {
-            $where[] = 'm.prix_minimum >= :prix_min';
+            $where[] = 'm.prix_par_personne * m.nombre_personne_minimum >= :prix_min';
             $params['prix_min'] = (float) $f['prix_min'];
         }
         if (!empty($f['theme'])) {
@@ -41,7 +46,8 @@ final class MenuRepository
             $params['personnes'] = (int) $f['personnes'];
         }
 
-        $sql = 'SELECT m.menu_id, m.titre, m.description, m.nombre_personne_minimum, m.prix_minimum,
+        $sql = 'SELECT m.menu_id, m.titre, m.description, m.nombre_personne_minimum, m.prix_par_personne,
+                       m.prix_par_personne * m.nombre_personne_minimum AS prix_minimum,
                        m.quantite_restante, t.libelle AS theme, r.libelle AS regime,
                        (SELECT chemin FROM menu_image i WHERE i.menu_id = m.menu_id ORDER BY ordre LIMIT 1) AS image,
                        (SELECT texte_alt FROM menu_image i WHERE i.menu_id = m.menu_id ORDER BY ordre LIMIT 1) AS image_alt
@@ -49,7 +55,7 @@ final class MenuRepository
                 JOIN theme t ON t.theme_id = m.theme_id
                 JOIN regime r ON r.regime_id = m.regime_id
                 WHERE ' . implode(' AND ', $where) . '
-                ORDER BY m.prix_minimum';
+                ORDER BY prix_minimum';
 
         return Database::run($sql, $params)->fetchAll();
     }
@@ -57,7 +63,7 @@ final class MenuRepository
     public static function trouver(int $id, bool $inclureInactifs = false): ?array
     {
         $menu = Database::run(
-            'SELECT m.*, t.libelle AS theme, r.libelle AS regime
+            'SELECT m.*, m.prix_par_personne * m.nombre_personne_minimum AS prix_minimum, t.libelle AS theme, r.libelle AS regime
              FROM menu m
              JOIN theme t ON t.theme_id = m.theme_id
              JOIN regime r ON r.regime_id = m.regime_id
@@ -76,7 +82,7 @@ final class MenuRepository
 
         // Plats du menu avec leurs allergènes regroupés (GROUP_CONCAT évite une requête par plat)
         $menu['plats'] = Database::run(
-            "SELECT p.plat_id, p.nom, p.type_plat, p.description,
+            "SELECT p.plat_id, p.titre_plat, p.type_plat, p.description,
                     GROUP_CONCAT(a.libelle ORDER BY a.libelle SEPARATOR ', ') AS allergenes
              FROM menu_plat mp
              JOIN plat p ON p.plat_id = mp.plat_id
@@ -84,7 +90,7 @@ final class MenuRepository
              LEFT JOIN allergene a ON a.allergene_id = pa.allergene_id
              WHERE mp.menu_id = :id
              GROUP BY p.plat_id
-             ORDER BY FIELD(p.type_plat, 'entree', 'plat', 'dessert'), p.nom",
+             ORDER BY FIELD(p.type_plat, 'entree', 'plat', 'dessert'), p.titre_plat",
             ['id' => $id]
         )->fetchAll();
 
@@ -104,7 +110,8 @@ final class MenuRepository
     public static function commandables(): array
     {
         return Database::run(
-            'SELECT menu_id, titre, nombre_personne_minimum, prix_minimum, quantite_restante
+            'SELECT menu_id, titre, nombre_personne_minimum, prix_par_personne,
+                    prix_par_personne * nombre_personne_minimum AS prix_minimum, quantite_restante
              FROM menu WHERE actif = 1 AND quantite_restante > 0 ORDER BY titre'
         )->fetchAll();
     }

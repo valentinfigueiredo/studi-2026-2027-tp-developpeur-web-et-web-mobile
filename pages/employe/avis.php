@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $avis = Database::run(
-    "SELECT a.avis_id, a.note, a.commentaire, a.statut, a.date_avis, u.prenom, u.nom, c.numero_commande, m.titre AS menu
+    "SELECT a.avis_id, a.note, a.description, a.statut, a.date_avis, u.prenom, u.nom, c.numero_commande, m.titre AS menu
      FROM avis a
      JOIN utilisateur u ON u.utilisateur_id = a.utilisateur_id
      JOIN commande c ON c.commande_id = a.commande_id

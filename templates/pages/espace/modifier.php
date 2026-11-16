@@ -8,7 +8,7 @@
         <?= App\Csrf::field() ?>
         <input type="hidden" name="id" value="<?= (int) $c['commande_id'] ?>">
         <!-- Menu non modifiable : simple champ caché qui porte les données de prix pour commande.js -->
-        <input type="hidden" id="menu_id" data-prix="<?= e($c['prix_minimum']) ?>" data-min="<?= (int) $c['nombre_personne_minimum'] ?>">
+        <input type="hidden" id="menu_id" data-prix="<?= e($c['prix_par_personne']) ?>" data-min="<?= (int) $c['nombre_personne_minimum'] ?>">
         <fieldset class="mb-4">
             <legend class="h5">1. Menu</legend>
             <p class="mb-0"><strong><?= e($c['menu_titre']) ?></strong> <span class="small text-muted">(le menu ne peut pas être modifié)</span></p>

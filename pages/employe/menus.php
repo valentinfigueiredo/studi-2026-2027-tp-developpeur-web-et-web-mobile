@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'react
 }
 
 $menus = Database::run(
-    'SELECT m.menu_id, m.titre, m.prix_minimum, m.nombre_personne_minimum, m.quantite_restante, m.actif,
+    'SELECT m.menu_id, m.titre, m.prix_par_personne, m.prix_par_personne * m.nombre_personne_minimum AS prix_minimum, m.nombre_personne_minimum, m.quantite_restante, m.actif,
             t.libelle AS theme, r.libelle AS regime
      FROM menu m JOIN theme t USING (theme_id) JOIN regime r USING (regime_id)
      ORDER BY m.actif DESC, m.titre'

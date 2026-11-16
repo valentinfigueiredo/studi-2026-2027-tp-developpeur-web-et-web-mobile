@@ -51,7 +51,7 @@ $disponible = (int) $menu['quantite_restante'] > 0;
                 <span class="prix"><?= money($menu['prix_minimum']) ?></span>
                 pour <?= (int) $menu['nombre_personne_minimum'] ?> personnes minimum
                 <span class="d-block small text-muted">
-                    soit <?= money($menu['prix_minimum'] / $menu['nombre_personne_minimum']) ?> par personne.
+                    soit <?= money($menu['prix_par_personne']) ?> par personne.
                     -10 % dès <?= (int) $menu['nombre_personne_minimum'] + 5 ?> personnes.
                 </span>
             </p>
@@ -93,7 +93,7 @@ $disponible = (int) $menu['quantite_restante'] > 0;
                     <ul class="list-unstyled">
                         <?php foreach ($liste as $p): ?>
                             <li class="mb-3">
-                                <strong><?= e($p['nom']) ?></strong>
+                                <strong><?= e($p['titre_plat']) ?></strong>
                                 <?php if ($p['description']): ?><br><span><?= e($p['description']) ?></span><?php endif; ?>
                                 <br><span class="small allergenes">
                                     Allergènes : <?= $p['allergenes'] ? e($p['allergenes']) : 'aucun allergène majeur' ?>

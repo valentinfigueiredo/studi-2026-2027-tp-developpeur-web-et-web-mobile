@@ -24,7 +24,8 @@
         // <select> (nouvelle commande) ou <input hidden> (modification, menu non modifiable)
         const source = champMenu.tagName === 'SELECT' ? champMenu.selectedOptions[0] : champMenu;
         if (!source || !source.dataset.prix) return null;
-        return { prix: parseFloat(source.dataset.prix), min: parseInt(source.dataset.min, 10) };
+        // data-prix = prix PAR PERSONNE (champ prix_par_personne du MCD)
+        return { prixParPersonne: parseFloat(source.dataset.prix), min: parseInt(source.dataset.min, 10) };
     };
 
     const estBordeaux = (ville) => ville.trim().toLowerCase().replace(/\s+cedex.*$/, '') === 'bordeaux';
@@ -52,7 +53,7 @@
             return;
         }
 
-        const prixMenu = arrondi((menu.prix / menu.min) * nb);
+        const prixMenu = arrondi(menu.prixParPersonne * nb);
         const reduction = nb >= menu.min + 5 ? arrondi(prixMenu * 0.1) : 0;
 
         let livraison = null;

@@ -51,7 +51,7 @@
 | RG4 | Aucun compte administrateur ne peut être créé depuis l'application. |
 | RG5 | Un compte désactivé ne peut plus se connecter. |
 | RG6 | Le nombre de personnes commandé est supérieur ou égal au minimum du menu. |
-| RG7 | Prix du menu = prix minimum ÷ nombre minimum × nombre de personnes. |
+| RG7 | Prix du menu = prix par personne × nombre de personnes. Le prix « à partir de » affiché = prix par personne × nombre minimum. |
 | RG8 | Réduction de 10 % si nombre de personnes ≥ minimum + 5. |
 | RG9 | Livraison gratuite à Bordeaux ; ailleurs 5 € + 0,59 € par kilomètre. |
 | RG10 | Les prix sont figés dans la commande au moment de la validation. |
@@ -107,9 +107,10 @@ erDiagram
         varchar prenom
         varchar nom
         varchar telephone
-        varchar adresse
+        varchar adresse_postale
         varchar code_postal
         varchar ville
+        varchar pays
         int role_id FK
         boolean actif
     }
@@ -120,14 +121,14 @@ erDiagram
         int theme_id FK
         int regime_id FK
         int nombre_personne_minimum
-        decimal prix_minimum
+        decimal prix_par_personne
         text conditions
         int quantite_restante
         boolean actif
     }
     PLAT {
         int plat_id PK
-        varchar nom
+        varchar titre_plat
         enum type_plat "entree, plat, dessert"
     }
     COMMANDE {
@@ -146,6 +147,7 @@ erDiagram
         decimal prix_total
         enum statut
         boolean pret_materiel
+        boolean restitution_materiel
         text motif_annulation
         enum mode_contact
         enum annulee_par
@@ -162,7 +164,7 @@ erDiagram
         int commande_id FK "UNIQUE"
         int utilisateur_id FK
         tinyint note "1 à 5"
-        text commentaire
+        text description
         enum statut "en_attente, valide, refuse"
     }
 ```
@@ -178,6 +180,55 @@ Tables de référence non détaillées ci-dessus : `role`, `theme`, `regime`, `a
 - **Contraintes `CHECK`** : la base refuse elle-même une note hors de 1 à 5, ou une annulation sans motif (et sans mode de contact si c'est un employé qui annule) (défense en profondeur, en plus des contrôles PHP).
 - **`ON DELETE CASCADE`** sur les tables dépendantes (images, compositions) ; **pas de cascade** sur `commande → utilisateur` ni sur `commande → menu`, pour ne jamais perdre l'historique comptable.
 - **Désactivation (`actif`) plutôt que suppression** d'un employé, pour conserver la traçabilité de ses actions (`suivi_commande.modifie_par`).
+
+
+## 3 bis. Correspondance avec le MCD fourni dans l'énoncé
+
+Le MCD de l'énoncé a servi de **base** au modèle : toutes ses entités, associations et cardinalités sont reprises, avec les mêmes noms de champs. Il a été **complété** là où le cahier des charges exige des informations que le MCD ne permet pas de stocker, et **corrigé** sur quelques types de données.
+
+### Entités et associations reprises
+
+| MCD de l'énoncé | Modèle physique | Remarque |
+|---|---|---|
+| utilisateur **possède** (1,1) role (0,n) | `utilisateur.role_id` → `role` | Identique |
+| utilisateur (0,n) **passe** commande | `commande.utilisateur_id` → `utilisateur` | Identique |
+| commande (1,1) **porte sur** menu (0,n) | `commande.menu_id` → `menu` | Identique |
+| menu (1,1) **adapte** regime (0,n) | `menu.regime_id` → `regime` | Identique |
+| menu (1,1) **propose** theme (0,n) | `menu.theme_id` → `theme` | Identique |
+| menu (1,n) **propose** plat (0,n) | table d'association `menu_plat` | Relation N-N : une table d'association est obligatoire en SQL |
+| plat (0,n) **contient** allergene (0,n) | table d'association `plat_allergene` | Relation N-N |
+| utilisateur (1,1) **publie** avis (0,n) | `avis.utilisateur_id` → `utilisateur` | Identique |
+| horaire (entité seule) | table `horaire` | Identique |
+
+Champs repris avec le même nom : `numero_commande`, `date_commande`, `date_prestation`, `heure_livraison`, `prix_menu`, `nombre_personne`, `prix_livraison`, `statut`, `pret_materiel`, `restitution_materiel`, `email`, `password`, `prenom`, `telephone`, `ville`, `pays`, `adresse_postale`, `titre`, `nombre_personne_minimum`, `prix_par_personne`, `description`, `quantite_restante`, `titre_plat`, `libelle`, `note`, `statut`, `jour`, `heure_ouverture`, `heure_fermeture`.
+
+### Compléments exigés par le cahier des charges
+
+| Ajout | Exigence du sujet |
+|---|---|
+| `menu.conditions` | « Les conditions de ce menu [...] doivent être bien mises en évidence » |
+| Table `menu_image` (galerie) | « Un menu dispose [...] d'une galerie d'images » |
+| `utilisateur.nom`, `code_postal`, `actif` | « Nom ainsi que le prénom » ; calcul de la livraison ; « rendre inutilisable un compte employé » |
+| `commande.adresse_prestation`, `code_postal`, `ville_prestation`, `distance_km` | « Adresse et date de la prestation » ; livraison facturée hors Bordeaux au kilomètre |
+| `commande.montant_reduction`, `prix_total` | Réduction de 10 % et « vue détaillée du prix » ; chiffre d'affaires de l'administrateur |
+| `commande.motif_annulation`, `mode_contact`, `annulee_par` | « Il devra mettre un motif d'annulation en spécifiant le mode de contact » |
+| Table `suivi_commande` | « Le suivi énumère tous les états de sa commande suivi de la date et l'heure » : un seul champ `statut` ne garde que l'état actuel |
+| `avis.commande_id` | L'avis se donne « depuis la commande », une fois celle-ci terminée (un avis par commande) |
+| `plat.type_plat`, `plat.description` | « Une liste de plats possibles (entrée, plat ainsi que dessert) » |
+| Tables `reinitialisation_mdp`, `tentative_connexion` | Mot de passe oublié par lien mail ; sécurité (anti force brute) |
+
+### Corrections techniques
+
+| MCD de l'énoncé | Choix retenu | Justification |
+|---|---|---|
+| Prix en `DOUBLE` | `DECIMAL(8,2)` / `DECIMAL(10,2)` | `DOUBLE` est un nombre à virgule flottante : il crée des erreurs d'arrondi sur les centimes (0,1 + 0,2 ≠ 0,3). `DECIMAL` est exact, indispensable pour de l'argent. |
+| `heure_livraison`, horaires en `VARCHAR` | `TIME` | Permet de comparer et de trier les heures, et la base refuse une heure invalide. |
+| `jour` en `VARCHAR` | `ENUM('lundi', ..., 'dimanche')` | Seules les 7 valeurs possibles sont acceptées. |
+| `statut` en `VARCHAR` | `ENUM` | La base refuse un statut inconnu. |
+| `menu.regime` (champ texte) **et** entité `regime` | Uniquement la clé étrangère `regime_id` | Le régime était stocké deux fois (redondance) : risque d'incohérence. |
+| `plat.photo` en `BLOB` | Images en fichiers + chemin en base (`menu_image.chemin`), au niveau du **menu** | Les BLOB alourdissent la base et ses sauvegardes, et empêchent le cache du navigateur. Le sujet demande une galerie par **menu**, pas une photo par plat. |
+| `numero_commande` comme identifiant | `commande_id` technique + `numero_commande` unique | Un identifiant numérique auto-incrémenté est plus performant pour les jointures ; le numéro lisible (CMD-2026-00001) reste unique et sert au client. |
+| `role_id`, `avis_id` en `INT` | `INT UNSIGNED AUTO_INCREMENT` | Comme les autres identifiants. |
 
 ## 4. Base non relationnelle (MongoDB)
 

@@ -24,7 +24,7 @@ INSERT INTO role (role_id, libelle) VALUES
 --  Utilisateurs
 --  Le compte administrateur n'est créable QUE par ce script (exigence de José).
 -- ---------------------------------------------------------------------
-INSERT INTO utilisateur (utilisateur_id, email, password, prenom, nom, telephone, adresse, code_postal, ville, role_id, actif) VALUES
+INSERT INTO utilisateur (utilisateur_id, email, password, prenom, nom, telephone, adresse_postale, code_postal, ville, role_id, actif) VALUES
     (1, 'jose@vite-gourmand.fr',
         '$2y$12$IkV31yzD8dwzx/217fhSbuHz9jLiMt6eaJJ9Ai2m95z01dFb4b4jK',
         'José', 'Garcia', '0601020304', '12 rue Sainte-Catherine', '33000', 'Bordeaux', 3, TRUE),
@@ -75,32 +75,32 @@ INSERT INTO allergene (allergene_id, libelle) VALUES
 
 -- ---------------------------------------------------------------------
 --  Menus
---  prix_minimum = prix pour nombre_personne_minimum personnes
+--  prix_par_personne x nombre_personne_minimum = prix affiché « à partir de »
 -- ---------------------------------------------------------------------
-INSERT INTO menu (menu_id, titre, description, theme_id, regime_id, nombre_personne_minimum, prix_minimum, conditions, quantite_restante) VALUES
+INSERT INTO menu (menu_id, titre, description, theme_id, regime_id, nombre_personne_minimum, prix_par_personne, conditions, quantite_restante) VALUES
     (1, 'Réveillon de Noël',
         'Un menu de fête généreux autour du foie gras, du chapon rôti et de la traditionnelle bûche, pour un réveillon sans stress.',
-        1, 1, 8, 360.00,
+        1, 1, 8, 45.00,
         'À commander au minimum 15 jours avant la prestation. À conserver au réfrigérateur entre 0 et 4 °C et à consommer dans les 24 heures.',
         5),
     (2, 'Brunch de Pâques',
         'Un brunch familial et printanier : agneau de sept heures, légumes primeurs et nid de Pâques au chocolat.',
-        2, 1, 10, 420.00,
+        2, 1, 10, 42.00,
         'À commander au minimum 10 jours avant la prestation. Vaisselle prêtée sur demande (à restituer sous 10 jours ouvrés).',
         8),
     (3, 'Le Bordelais classique',
         'Les incontournables de la cuisine bordelaise : entrecôte à la bordelaise, gratin dauphinois et cannelés maison.',
-        3, 1, 6, 180.00,
+        3, 1, 6, 30.00,
         'À commander au minimum 72 heures avant la prestation. À conserver au réfrigérateur entre 0 et 4 °C.',
         20),
     (4, 'Jardin vegan',
         'Un menu 100 % végétal, coloré et de saison : velouté de potimarron, curry de légumes et mousse au chocolat à l''aquafaba.',
-        3, 3, 4, 140.00,
+        3, 3, 4, 35.00,
         'À commander au minimum 48 heures avant la prestation. Préparé dans un espace dédié, mais traces d''allergènes possibles.',
         15),
     (5, 'Cocktail d''entreprise',
         'Un buffet dînatoire pour vos événements professionnels : pièces salées, mini-burgers et mignardises.',
-        4, 2, 20, 700.00,
+        4, 2, 20, 35.00,
         'À commander au minimum 3 semaines avant la prestation. Matériel de service prêté (à restituer sous 10 jours ouvrés, sinon 600 € de frais).',
         3);
 
@@ -118,7 +118,7 @@ INSERT INTO menu_image (menu_id, chemin, texte_alt, ordre) VALUES
 -- ---------------------------------------------------------------------
 --  Plats (certains sont partagés entre plusieurs menus)
 -- ---------------------------------------------------------------------
-INSERT INTO plat (plat_id, nom, type_plat, description) VALUES
+INSERT INTO plat (plat_id, titre_plat, type_plat, description) VALUES
     (1,  'Foie gras maison et chutney de figues', 'entree',  'Foie gras mi-cuit, pain d''épices toasté.'),
     (2,  'Velouté de potimarron',                 'entree',  'Velouté onctueux au lait de coco.'),
     (3,  'Salade de chèvre chaud',                'entree',  'Toasts de chèvre, miel et noix.'),
@@ -174,7 +174,7 @@ INSERT INTO horaire (jour, heure_ouverture, heure_fermeture, ferme) VALUES
 -- ---------------------------------------------------------------------
 --  Commandes (un exemple par statut important)
 --  Règles de calcul :
---    prix_menu         = prix_minimum / nb_min * nombre_personne
+--    prix_menu         = prix_par_personne x nombre_personne
 --    montant_reduction = 10 % de prix_menu si nombre_personne >= nb_min + 5
 --    prix_livraison    = 0 à Bordeaux, sinon 5 € + 0,59 € x distance_km
 --    prix_total        = prix_menu - montant_reduction + prix_livraison
@@ -254,7 +254,7 @@ INSERT INTO suivi_commande (commande_id, statut, date_modification, modifie_par)
 -- ---------------------------------------------------------------------
 --  Avis (uniquement sur des commandes terminées)
 -- ---------------------------------------------------------------------
-INSERT INTO avis (commande_id, utilisateur_id, note, commentaire, statut, date_avis) VALUES
+INSERT INTO avis (commande_id, utilisateur_id, note, description, statut, date_avis) VALUES
     (1, 4, 5, 'Un réveillon parfait, le chapon était fondant et la livraison pile à l''heure. Merci Julie et José !', 'valide',     '2025-12-26 11:00:00'),
     (6, 5, 4, 'Entrecôte excellente et cannelés comme à Bordeaux. Petit bémol sur le gratin un peu tiède.',        'valide',     '2026-06-15 09:30:00'),
     (7, 5, 3, 'Bon curry mais portions un peu justes pour 4.',                                                       'en_attente', '2026-09-13 10:00:00');

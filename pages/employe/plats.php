@@ -21,28 +21,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($action === 'enregistrer') {
-        $nom = trim($_POST['nom'] ?? '');
+        $titre = trim($_POST['titre_plat'] ?? '');
         $type = $_POST['type_plat'] ?? '';
         $description = trim($_POST['description'] ?? '');
         $choix = array_values(array_intersect(array_map('intval', (array) ($_POST['allergenes'] ?? [])), $idsAllergenes));
 
         $v = (new Validator())
-            ->required('nom', $nom, 'Nom du plat')
-            ->maxLength('nom', $nom, 150, 'Nom du plat')
+            ->required('titre_plat', $titre, 'Nom du plat')
+            ->maxLength('titre_plat', $titre, 150, 'Nom du plat')
             ->in('type_plat', $type, ['entree', 'plat', 'dessert'], 'Choisissez le type de plat.');
 
         if ($v->fails()) {
             $errors = $v->errors();
-            $edition = ['plat_id' => $platId, 'nom' => $nom, 'type_plat' => $type, 'description' => $description, 'allergenes' => $choix];
+            $edition = ['plat_id' => $platId, 'titre_plat' => $titre, 'type_plat' => $type, 'description' => $description, 'allergenes' => $choix];
         } else {
             $pdo = Database::pdo();
             $pdo->beginTransaction();
             if ($platId) {
-                Database::run('UPDATE plat SET nom = :n, type_plat = :t, description = :d WHERE plat_id = :id',
-                    ['n' => $nom, 't' => $type, 'd' => $description ?: null, 'id' => $platId]);
+                Database::run('UPDATE plat SET titre_plat = :n, type_plat = :t, description = :d WHERE plat_id = :id',
+                    ['n' => $titre, 't' => $type, 'd' => $description ?: null, 'id' => $platId]);
             } else {
-                Database::run('INSERT INTO plat (nom, type_plat, description) VALUES (:n, :t, :d)',
-                    ['n' => $nom, 't' => $type, 'd' => $description ?: null]);
+                Database::run('INSERT INTO plat (titre_plat, type_plat, description) VALUES (:n, :t, :d)',
+                    ['n' => $titre, 't' => $type, 'd' => $description ?: null]);
                 $platId = (int) $pdo->lastInsertId();
             }
             Database::run('DELETE FROM plat_allergene WHERE plat_id = :id', ['id' => $platId]);
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $insert->execute(['p' => $platId, 'a' => $a]);
             }
             $pdo->commit();
-            flash('success', 'Le plat « ' . $nom . ' » a été enregistré.');
+            flash('success', 'Le plat « ' . $titre . ' » a été enregistré.');
             redirect('/employe/plats');
         }
     }
@@ -67,7 +67,7 @@ if ($edition === null && isset($_GET['id'])) {
 }
 
 $plats = Database::run(
-    "SELECT p.plat_id, p.nom, p.type_plat,
+    "SELECT p.plat_id, p.titre_plat, p.type_plat,
             GROUP_CONCAT(DISTINCT a.libelle ORDER BY a.libelle SEPARATOR ', ') AS allergenes,
             COUNT(DISTINCT mp.menu_id) AS nb_menus
      FROM plat p
@@ -75,13 +75,13 @@ $plats = Database::run(
      LEFT JOIN allergene a ON a.allergene_id = pa.allergene_id
      LEFT JOIN menu_plat mp ON mp.plat_id = p.plat_id
      GROUP BY p.plat_id
-     ORDER BY FIELD(p.type_plat, 'entree', 'plat', 'dessert'), p.nom"
+     ORDER BY FIELD(p.type_plat, 'entree', 'plat', 'dessert'), p.titre_plat"
 )->fetchAll();
 
 render('employe/plats', [
     'title'      => 'Gestion des plats',
     'plats'      => $plats,
     'allergenes' => $allergenes,
-    'edition'    => $edition ?? ['plat_id' => 0, 'nom' => '', 'type_plat' => '', 'description' => '', 'allergenes' => []],
+    'edition'    => $edition ?? ['plat_id' => 0, 'titre_plat' => '', 'type_plat' => '', 'description' => '', 'allergenes' => []],
     'errors'     => $errors,
 ]);
