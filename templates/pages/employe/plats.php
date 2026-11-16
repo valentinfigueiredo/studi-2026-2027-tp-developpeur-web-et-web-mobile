@@ -12,17 +12,17 @@
                     <tbody>
                     <?php foreach ($plats as $p): ?>
                         <tr>
-                            <th scope="row"><?= e($p['nom']) ?></th>
+                            <th scope="row"><?= e($p['titre_plat']) ?></th>
                             <td><?= e($types[$p['type_plat']]) ?></td>
                             <td class="small"><?= e($p['allergenes'] ?? '-') ?></td>
                             <td><?= (int) $p['nb_menus'] ?></td>
                             <td class="text-nowrap">
-                                <a class="btn btn-sm btn-outline-bordeaux" href="/employe/plats?id=<?= (int) $p['plat_id'] ?>">Modifier<span class="visually-hidden"> <?= e($p['nom']) ?></span></a>
-                                <form method="post" action="/employe/plats" class="d-inline js-confirmer" data-confirmation="Supprimer le plat « <?= e($p['nom']) ?> » ? Il sera retiré de <?= (int) $p['nb_menus'] ?> menu(s).">
+                                <a class="btn btn-sm btn-outline-bordeaux" href="/employe/plats?id=<?= (int) $p['plat_id'] ?>">Modifier<span class="visually-hidden"> <?= e($p['titre_plat']) ?></span></a>
+                                <form method="post" action="/employe/plats" class="d-inline js-confirmer" data-confirmation="Supprimer le plat « <?= e($p['titre_plat']) ?> » ? Il sera retiré de <?= (int) $p['nb_menus'] ?> menu(s).">
                                     <?= App\Csrf::field() ?>
                                     <input type="hidden" name="action" value="supprimer">
                                     <input type="hidden" name="plat_id" value="<?= (int) $p['plat_id'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer<span class="visually-hidden"> <?= e($p['nom']) ?></span></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer<span class="visually-hidden"> <?= e($p['titre_plat']) ?></span></button>
                                 </form>
                             </td>
                         </tr>
@@ -38,9 +38,9 @@
                 <input type="hidden" name="action" value="enregistrer">
                 <input type="hidden" name="plat_id" value="<?= (int) $edition['plat_id'] ?>">
                 <div class="mb-3">
-                    <label for="nom" class="form-label">Nom <span aria-hidden="true">*</span></label>
-                    <input type="text" class="form-control<?= aria_invalid($errors, 'nom') ?>" id="nom" name="nom" value="<?= old($edition, 'nom') ?>" required maxlength="150">
-                    <?= field_error($errors, 'nom') ?>
+                    <label for="titre_plat" class="form-label">Nom du plat <span aria-hidden="true">*</span></label>
+                    <input type="text" class="form-control<?= aria_invalid($errors, 'titre_plat') ?>" id="titre_plat" name="titre_plat" value="<?= old($edition, 'titre_plat') ?>" required maxlength="150">
+                    <?= field_error($errors, 'titre_plat') ?>
                 </div>
                 <div class="mb-3">
                     <label for="type_plat" class="form-label">Type <span aria-hidden="true">*</span></label>

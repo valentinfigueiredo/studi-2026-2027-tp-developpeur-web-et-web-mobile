@@ -16,7 +16,7 @@ if ($id && !$menu) {
 $errors = [];
 $data = $menu ?? [
     'titre' => '', 'description' => '', 'theme_id' => '', 'regime_id' => '', 'nombre_personne_minimum' => '',
-    'prix_minimum' => '', 'conditions' => '', 'quantite_restante' => '', 'images' => [], 'plats' => [],
+    'prix_par_personne' => '', 'conditions' => '', 'quantite_restante' => '', 'images' => [], 'plats' => [],
 ];
 $platsChoisis = array_column($data['plats'], 'plat_id');
 
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'enreg
         'theme_id'                => (int) ($_POST['theme_id'] ?? 0),
         'regime_id'               => (int) ($_POST['regime_id'] ?? 0),
         'nombre_personne_minimum' => $_POST['nombre_personne_minimum'] ?? '',
-        'prix_minimum'            => str_replace(',', '.', (string) ($_POST['prix_minimum'] ?? '')),
+        'prix_par_personne'            => str_replace(',', '.', (string) ($_POST['prix_par_personne'] ?? '')),
         'conditions'              => trim($_POST['conditions'] ?? ''),
         'quantite_restante'       => $_POST['quantite_restante'] ?? '',
     ]);
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'enreg
         ->in('regime_id', $data['regime_id'], $regimes, 'Choisissez un régime.')
         ->intRange('nombre_personne_minimum', $data['nombre_personne_minimum'], 1, 500, 'Le nombre de personnes minimum doit être un entier positif.')
         ->intRange('quantite_restante', $data['quantite_restante'], 0, 10000, 'Le stock doit être un entier positif ou nul.')
-        ->custom('prix_minimum', is_numeric($data['prix_minimum']) && (float) $data['prix_minimum'] > 0, 'Le prix doit être un nombre positif.')
+        ->custom('prix_par_personne', is_numeric($data['prix_par_personne']) && (float) $data['prix_par_personne'] > 0, 'Le prix doit être un nombre positif.')
         ->custom('plats', $platsChoisis !== [], 'Sélectionnez au moins un plat.');
 
     $nouvelleImage = ($_FILES['image']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE;
@@ -76,19 +76,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'enreg
             $params = [
                 'titre' => $data['titre'], 'description' => $data['description'], 'theme' => $data['theme_id'],
                 'regime' => $data['regime_id'], 'min' => (int) $data['nombre_personne_minimum'],
-                'prix' => round((float) $data['prix_minimum'], 2), 'conditions' => $data['conditions'],
+                'prix' => round((float) $data['prix_par_personne'], 2), 'conditions' => $data['conditions'],
                 'stock' => (int) $data['quantite_restante'],
             ];
             if ($id) {
                 Database::run(
                     'UPDATE menu SET titre = :titre, description = :description, theme_id = :theme, regime_id = :regime,
-                        nombre_personne_minimum = :min, prix_minimum = :prix, conditions = :conditions, quantite_restante = :stock
+                        nombre_personne_minimum = :min, prix_par_personne = :prix, conditions = :conditions, quantite_restante = :stock
                      WHERE menu_id = :id',
                     $params + ['id' => $id]
                 );
             } else {
                 Database::run(
-                    'INSERT INTO menu (titre, description, theme_id, regime_id, nombre_personne_minimum, prix_minimum, conditions, quantite_restante)
+                    'INSERT INTO menu (titre, description, theme_id, regime_id, nombre_personne_minimum, prix_par_personne, conditions, quantite_restante)
                      VALUES (:titre, :description, :theme, :regime, :min, :prix, :conditions, :stock)',
                     $params
                 );
@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'enreg
     }
 }
 
-$plats = Database::run("SELECT plat_id, nom, type_plat FROM plat ORDER BY FIELD(type_plat, 'entree', 'plat', 'dessert'), nom")->fetchAll();
+$plats = Database::run("SELECT plat_id, titre_plat, type_plat FROM plat ORDER BY FIELD(type_plat, 'entree', 'plat', 'dessert'), titre_plat")->fetchAll();
 
 render('employe/menu-form', [
     'title'        => $menu ? 'Modifier le menu' : 'Nouveau menu',

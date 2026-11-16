@@ -30,9 +30,10 @@ CREATE TABLE utilisateur (
     prenom          VARCHAR(100) NOT NULL,
     nom             VARCHAR(100) NOT NULL,
     telephone       VARCHAR(20)  NULL,                 -- GSM (NULL possible pour un employé)
-    adresse         VARCHAR(255) NULL,
+    adresse_postale VARCHAR(255) NULL,
     code_postal     VARCHAR(10)  NULL,
     ville           VARCHAR(100) NULL,
+    pays            VARCHAR(100) NOT NULL DEFAULT 'France',
     role_id         INT UNSIGNED NOT NULL,
     actif           BOOLEAN NOT NULL DEFAULT TRUE,     -- FALSE = compte désactivé (départ d'un employé)
     date_creation   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -75,7 +76,7 @@ CREATE TABLE menu (
     theme_id                INT UNSIGNED NOT NULL,
     regime_id               INT UNSIGNED NOT NULL,
     nombre_personne_minimum INT UNSIGNED NOT NULL,
-    prix_minimum            DECIMAL(8,2) NOT NULL,     -- prix pour le nombre de personnes minimum
+    prix_par_personne       DECIMAL(8,2) NOT NULL,     -- prix d'une part (MCD de l'énoncé)
     conditions              TEXT NOT NULL,             -- délai de commande, stockage... (affiché en évidence)
     quantite_restante       INT UNSIGNED NOT NULL DEFAULT 0, -- stock : nb de commandes encore possibles
     actif                   BOOLEAN NOT NULL DEFAULT TRUE,
@@ -83,7 +84,7 @@ CREATE TABLE menu (
     CONSTRAINT fk_menu_theme  FOREIGN KEY (theme_id)  REFERENCES theme(theme_id),
     CONSTRAINT fk_menu_regime FOREIGN KEY (regime_id) REFERENCES regime(regime_id),
     CONSTRAINT chk_menu_personnes CHECK (nombre_personne_minimum >= 1),
-    CONSTRAINT chk_menu_prix      CHECK (prix_minimum > 0)
+    CONSTRAINT chk_menu_prix      CHECK (prix_par_personne > 0)
 ) ENGINE=InnoDB;
 
 -- Galerie d'images d'un menu (1 menu -> N images).
@@ -99,7 +100,7 @@ CREATE TABLE menu_image (
 
 CREATE TABLE plat (
     plat_id     INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nom         VARCHAR(150) NOT NULL,
+    titre_plat  VARCHAR(150) NOT NULL,
     type_plat   ENUM('entree', 'plat', 'dessert') NOT NULL,
     description TEXT NULL
 ) ENGINE=InnoDB;
@@ -173,6 +174,7 @@ CREATE TABLE commande (
                             'annulee'
                         ) NOT NULL DEFAULT 'en_attente',
     pret_materiel       BOOLEAN NOT NULL DEFAULT FALSE,
+    restitution_materiel BOOLEAN NOT NULL DEFAULT FALSE, -- TRUE quand le matériel prêté a été rendu
     -- Annulation : motif toujours obligatoire ; mode de contact obligatoire si c'est un employé qui annule
     motif_annulation    TEXT NULL,
     mode_contact        ENUM('telephone', 'mail') NULL,
@@ -210,7 +212,7 @@ CREATE TABLE avis (
     commande_id     INT UNSIGNED NOT NULL UNIQUE,
     utilisateur_id  INT UNSIGNED NOT NULL,
     note            TINYINT UNSIGNED NOT NULL,
-    commentaire     TEXT NOT NULL,
+    description     TEXT NOT NULL,                 -- commentaire du client
     statut          ENUM('en_attente', 'valide', 'refuse') NOT NULL DEFAULT 'en_attente',
     date_avis       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_avis_commande    FOREIGN KEY (commande_id)    REFERENCES commande(commande_id) ON DELETE CASCADE,
@@ -223,7 +225,7 @@ CREATE TABLE avis (
 -- ---------------------------------------------------------------------
 
 -- Filtres de la vue globale des menus (prix, thème, régime, nb personnes)
-CREATE INDEX idx_menu_filtres ON menu (actif, theme_id, regime_id, prix_minimum, nombre_personne_minimum);
+CREATE INDEX idx_menu_filtres ON menu (actif, theme_id, regime_id, nombre_personne_minimum);
 -- Filtre des commandes dans l'espace employé (par statut, par client)
 CREATE INDEX idx_commande_statut      ON commande (statut);
 CREATE INDEX idx_commande_utilisateur ON commande (utilisateur_id);

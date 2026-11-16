@@ -29,9 +29,9 @@
                     </div>
                     <?php if ($estClient): ?>
                         <div class="col-12">
-                            <label for="adresse" class="form-label">Adresse postale</label>
-                            <input type="text" class="form-control<?= aria_invalid($errors, 'adresse') ?>" id="adresse" name="adresse" value="<?= old($data, 'adresse') ?>" autocomplete="street-address">
-                            <?= field_error($errors, 'adresse') ?>
+                            <label for="adresse_postale" class="form-label">Adresse postale</label>
+                            <input type="text" class="form-control<?= aria_invalid($errors, 'adresse_postale') ?>" id="adresse_postale" name="adresse_postale" value="<?= old($data, 'adresse_postale') ?>" autocomplete="street-address">
+                            <?= field_error($errors, 'adresse_postale') ?>
                         </div>
                         <div class="col-sm-4">
                             <label for="code_postal" class="form-label">Code postal</label>
@@ -42,6 +42,11 @@
                             <label for="ville" class="form-label">Ville</label>
                             <input type="text" class="form-control<?= aria_invalid($errors, 'ville') ?>" id="ville" name="ville" value="<?= old($data, 'ville') ?>" autocomplete="address-level2">
                             <?= field_error($errors, 'ville') ?>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="pays" class="form-label">Pays</label>
+                            <input type="text" class="form-control<?= aria_invalid($errors, 'pays') ?>" id="pays" name="pays" value="<?= old($data, 'pays', 'France') ?>" autocomplete="country-name">
+                            <?= field_error($errors, 'pays') ?>
                         </div>
                     <?php endif; ?>
                 </div>

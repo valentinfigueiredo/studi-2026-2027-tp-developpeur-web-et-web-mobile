@@ -80,7 +80,7 @@
                             <p class="etoiles mb-2" aria-label="Note : <?= (int) $a['note'] ?> sur 5">
                                 <span aria-hidden="true"><?= etoiles((int) $a['note']) ?></span>
                             </p>
-                            <blockquote class="mb-3"><p class="mb-0"><?= e($a['commentaire']) ?></p></blockquote>
+                            <blockquote class="mb-3"><p class="mb-0"><?= e($a['description']) ?></p></blockquote>
                             <figcaption class="small text-muted">
                                 <?= e($a['prenom'] . ' ' . $a['initiale'] . '.') ?>, menu « <?= e($a['menu']) ?> »
                             </figcaption>

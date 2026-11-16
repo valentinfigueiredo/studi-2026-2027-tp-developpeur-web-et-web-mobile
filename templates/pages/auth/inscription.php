@@ -41,9 +41,9 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="adresse" class="form-label">Adresse postale <span aria-hidden="true">*</span></label>
-                        <input type="text" class="form-control<?= aria_invalid($errors, 'adresse') ?>" id="adresse" name="adresse" value="<?= old($data, 'adresse') ?>" required autocomplete="street-address">
-                        <?= field_error($errors, 'adresse') ?>
+                        <label for="adresse_postale" class="form-label">Adresse postale <span aria-hidden="true">*</span></label>
+                        <input type="text" class="form-control<?= aria_invalid($errors, 'adresse_postale') ?>" id="adresse_postale" name="adresse_postale" value="<?= old($data, 'adresse_postale') ?>" required autocomplete="street-address">
+                        <?= field_error($errors, 'adresse_postale') ?>
                     </div>
                     <div class="row g-3 mb-3">
                         <div class="col-sm-4">
@@ -55,6 +55,11 @@
                             <label for="ville" class="form-label">Ville <span aria-hidden="true">*</span></label>
                             <input type="text" class="form-control<?= aria_invalid($errors, 'ville') ?>" id="ville" name="ville" value="<?= old($data, 'ville') ?>" required autocomplete="address-level2">
                             <?= field_error($errors, 'ville') ?>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="pays" class="form-label">Pays <span aria-hidden="true">*</span></label>
+                            <input type="text" class="form-control<?= aria_invalid($errors, 'pays') ?>" id="pays" name="pays" value="<?= old($data, 'pays', 'France') ?>" required autocomplete="country-name">
+                            <?= field_error($errors, 'pays') ?>
                         </div>
                     </div>
                 </fieldset>
