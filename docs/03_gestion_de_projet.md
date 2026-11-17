@@ -15,7 +15,7 @@ Le projet suit une approche **agile de type Kanban**, adaptée à un développeu
 
 | Backlog | À faire (semaine) | En cours | En test | Terminé |
 |---|---|---|---|---|
-| Toutes les stories priorisées | Stories retenues pour la semaine | Une seule à la fois | Testée sur la branche `develop` | Fusionnée dans `main` et déployée |
+| Toutes les stories priorisées | Stories retenues pour la semaine | Une seule à la fois | Testée sur la branche `develop` | Fusionnée dans `master` et déployée |
 
 ### Définition de « terminé »
 
@@ -69,6 +69,7 @@ Le projet suit une approche **agile de type Kanban**, adaptée à un développeu
 ## 5. Organisation Git
 
 ```mermaid
+%%{init: { 'gitGraph': { 'mainBranchName': 'master' } } }%%
 gitGraph
     commit id: "Initialisation"
     branch develop
@@ -85,11 +86,11 @@ gitGraph
     commit id: "Commande + prix"
     checkout develop
     merge feature/commande
-    checkout main
+    checkout master
     merge develop tag: "v1.0"
 ```
 
-- **`main`** : uniquement du code testé, c'est ce qui est déployé.
+- **`master`** : uniquement du code testé, c'est ce qui est déployé.
 - **`develop`** : branche d'intégration.
 - **`feature/<nom>`** : une branche par user story, créée depuis `develop`, fusionnée dans `develop` (avec `--no-ff`, pour garder la trace de la fonctionnalité) une fois testée.
 - Messages de commit clairs et au présent, préfixés par leur type : `feat:`, `fix:`, `docs:`, `refactor:`.
@@ -99,6 +100,6 @@ gitGraph
 | Risque | Impact | Prévention |
 |---|---|---|
 | Faille de sécurité (données clients) | Élevé | Requêtes préparées, CSRF, échappement, revue des droits à chaque page |
-| Application non en ligne à la livraison (pénalités) | Élevé | Déploiement dès la semaine 2, puis à chaque fusion dans `main` |
+| Application non en ligne à la livraison (pénalités) | Élevé | Déploiement dès la semaine 2, puis à chaque fusion dans `master` |
 | Mauvaise compréhension d'une règle (réduction, livraison) | Moyen | Règles de gestion numérotées et validées avec le chef de projet |
 | Indisponibilité de MongoDB | Faible | Les commandes continuent ; les statistiques se reconstruisent depuis MySQL |

@@ -145,10 +145,10 @@ fly ssh console -C "php /var/www/html/bin/sync-mongo.php"
 
 ## 8. Mises à jour
 
-Le déploiement se fait toujours depuis la branche `main`, après fusion de `develop` testée :
+Le déploiement se fait toujours depuis la branche `master`, après fusion de `develop` testée :
 
 ```bash
-git checkout main && git pull
+git checkout master && git pull
 fly deploy
 ```
 
