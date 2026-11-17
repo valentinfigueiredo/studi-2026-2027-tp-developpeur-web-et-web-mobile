@@ -89,6 +89,8 @@ DB_PORT=3306
 DB_NAME=<compte>_vitegourmand
 DB_USER=<compte>_app
 DB_PASSWORD=<mot-de-passe-fort>
+# Alwaysdata impose une connexion chiffrée (REQUIRE SSL) : sans cette ligne, PHP est refusé (erreur 1045)
+DB_SSL_CA=/etc/ssl/certs/ca-certificates.crt
 
 MONGO_URI=mongodb+srv://vite_gourmand:<mdp>@<cluster>.mongodb.net/?retryWrites=true&w=majority
 MONGO_DB=vite_gourmand

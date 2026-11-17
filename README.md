@@ -10,7 +10,7 @@ Projet réalisé par FastDev.
 
 | | |
 |---|---|
-| Application en ligne | `https://<compte>.alwaysdata.net` (à remplacer par l'adresse Alwaysdata)|
+| Application en ligne | `https://viteetgourmandvalentinfigueiredo.alwaysdata.net`|
 | Gestion de projet | `https://app.notion.com/p/notion-vite-gourmand-41b1da97a823800f9a8af9064d34c582?source=copy_link` |
 | Documentation | dossier [`docs/`](docs) |
 
