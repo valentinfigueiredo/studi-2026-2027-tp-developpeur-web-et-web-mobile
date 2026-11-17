@@ -59,7 +59,7 @@ Le projet suit une approche **agile de type Kanban**, adaptée à un développeu
 |---|---|---|
 | 1 | Analyse des besoins, MCD, user stories, tableau Kanban | `01_conception.md`, tableau Trello |
 | 1 | Charte graphique, wireframes puis maquettes (3 ordinateur et 3 mobile) | PDF charte et maquettes |
-| 2 | Environnement (Docker), scripts SQL, squelette MVC, authentification | US3, US4 |
+| 2 | Environnement local, scripts SQL, squelette MVC, authentification | US3, US4 |
 | 2 | Pages publiques et filtres dynamiques | US1, US2, US14 |
 | 3 | Commande, calcul du prix, emails, espace utilisateur | US5 à US8 |
 | 3 | Espace employé | US9 à US11 |

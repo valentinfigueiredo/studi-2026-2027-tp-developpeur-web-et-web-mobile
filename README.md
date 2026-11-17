@@ -10,8 +10,8 @@ Projet réalisé par FastDev.
 
 | | |
 |---|---|
-| Application en ligne | `https://vite-et-gourmand.fly.dev` *(à remplacer par votre URL)* |
-| Gestion de projet | *lien Trello / Notion à ajouter* |
+| Application en ligne | `https://vite-et-gourmand.fly.dev`|
+| Gestion de projet | `https://app.notion.com/p/notion-vite-gourmand-41b1da97a823800f9a8af9064d34c582?source=copy_link` |
 | Documentation | dossier [`docs/`](docs) |
 
 ## Stack technique
@@ -23,29 +23,11 @@ Projet réalisé par FastDev.
 | Base relationnelle | MySQL 8 / MariaDB |
 | Base NoSQL | MongoDB (statistiques) |
 | Emails | PHPMailer (SMTP) |
-| Déploiement | Docker, Fly.io |
+| Déploiement | Fly.io (image Docker) |
 
 ## Installation en local
 
-### Option 1 : avec Docker (recommandée)
-
-Prérequis : [Docker Desktop](https://www.docker.com/products/docker-desktop/).
-
-```bash
-git clone https://github.com/valentinfigueiredo/studi-2026-2027-tp-developpeur-web-et-web-mobile.git
-cd studi-2026-2027-tp-developpeur-web-et-web-mobile
-docker compose up -d --build
-docker compose exec app php bin/sync-mongo.php   # alimente MongoDB avec les commandes de démonstration
-```
-
-- Application : http://localhost:8000
-- Boîte mail de test (Mailpit, tous les emails envoyés y arrivent) : http://localhost:8025
-
-La base MySQL est créée et remplie automatiquement au premier démarrage (scripts du dossier `database/`).
-
-### Option 2 : installation manuelle
-
-Prérequis : PHP 8.2+ avec les extensions `pdo_mysql`, `mongodb`, `intl` et `curl`, Composer, MySQL 8 (ou MariaDB 10.6+), MongoDB 6+.
+Prérequis : PHP 8.3+ avec les extensions `pdo_mysql`, `mongodb`, `intl` et `curl`, Composer, MySQL 8 (ou MariaDB 10.6+), MongoDB 6+.
 
 ```bash
 git clone https://github.com/valentinfigueiredo/studi-2026-2027-tp-developpeur-web-et-web-mobile.git
@@ -90,9 +72,8 @@ Sans serveur SMTP configuré (`MAIL_HOST` vide), les emails sont enregistrés da
 ├── database/             Scripts SQL : structure, données, droits
 ├── bin/sync-mongo.php    Reconstruction des statistiques MongoDB
 ├── docs/                 Documentation (conception, technique, projet, PDF)
-├── docker/               Configuration Apache
-├── Dockerfile            Image de production
-├── docker-compose.yml    Environnement de développement complet
+├── docker/               Configuration Apache (image Fly.io)
+├── Dockerfile            Image de production (Fly.io)
 └── fly.toml              Configuration du déploiement Fly.io
 ```
 

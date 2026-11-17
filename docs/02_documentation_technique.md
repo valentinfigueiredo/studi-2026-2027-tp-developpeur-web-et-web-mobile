@@ -27,8 +27,8 @@
 | Outil | Usage |
 |---|---|
 | Visual Studio Code (extensions PHP Intelephense, ESLint) | Éditeur de code |
-| Docker Desktop + `docker-compose.yml` | Environnement complet en une commande : PHP/Apache, MySQL, MongoDB, Mailpit |
-| Mailpit | Interception des emails en développement (http://localhost:8025) |
+| PHP 8.3 (serveur intégré `php -S`) | Exécution de l'application en local |
+| MySQL 8 / MongoDB 6 | Bases de données locales |
 | Git + GitHub | Versionnement, avec une branche par fonctionnalité |
 | Composer | Dépendances PHP (`mongodb/mongodb`, `phpmailer/phpmailer`) |
 | MySQL Workbench / MongoDB Compass | Consultation des bases |
