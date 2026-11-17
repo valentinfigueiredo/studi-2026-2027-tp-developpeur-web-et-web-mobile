@@ -32,8 +32,8 @@ Projet réalisé par FastDev.
 Prérequis : [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 ```bash
-git clone https://github.com/<votre-compte>/vite-et-gourmand.git
-cd vite-et-gourmand
+git clone https://github.com/valentinfigueiredo/studi-2026-2027-tp-developpeur-web-et-web-mobile.git
+cd studi-2026-2027-tp-developpeur-web-et-web-mobile
 docker compose up -d --build
 docker compose exec app php bin/sync-mongo.php   # alimente MongoDB avec les commandes de démonstration
 ```
@@ -48,8 +48,8 @@ La base MySQL est créée et remplie automatiquement au premier démarrage (scri
 Prérequis : PHP 8.2+ avec les extensions `pdo_mysql`, `mongodb`, `intl` et `curl`, Composer, MySQL 8 (ou MariaDB 10.6+), MongoDB 6+.
 
 ```bash
-git clone https://github.com/<votre-compte>/vite-et-gourmand.git
-cd vite-et-gourmand
+git clone https://github.com/valentinfigueiredo/studi-2026-2027-tp-developpeur-web-et-web-mobile.git
+cd studi-2026-2027-tp-developpeur-web-et-web-mobile
 composer install
 
 # Base de données (création, données de démonstration, utilisateur applicatif)
@@ -102,10 +102,10 @@ Le déploiement sur Fly.io est détaillé dans [`docs/04_deploiement.md`](docs/0
 
 ## Git : organisation des branches
 
-- `main` : version en production, toujours stable.
+- `master` : branche principale, version en production, toujours stable.
 - `develop` : intégration des fonctionnalités terminées.
 - `feature/<nom>` : une branche par fonctionnalité, créée depuis `develop`, fusionnée dans `develop` après tests.
-- Une fois `develop` testée, elle est fusionnée dans `main`.
+- Une fois `develop` testée, elle est fusionnée dans `master`.
 
 ## Tests
 
