@@ -10,7 +10,7 @@
 --    Employé désactivé (ne peut plus se connecter) : ancien.employe@vite-gourmand.fr
 -- =====================================================================
 
-USE vite_gourmand;
+SET NAMES utf8mb4;
 
 -- ---------------------------------------------------------------------
 --  Rôles

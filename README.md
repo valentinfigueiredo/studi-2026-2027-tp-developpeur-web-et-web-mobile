@@ -10,7 +10,7 @@ Projet réalisé par FastDev.
 
 | | |
 |---|---|
-| Application en ligne | `https://vite-et-gourmand-valentin-figueiredo.fly.dev`|
+| Application en ligne | `https://<compte>.alwaysdata.net` (à remplacer par l'adresse Alwaysdata)|
 | Gestion de projet | `https://app.notion.com/p/notion-vite-gourmand-41b1da97a823800f9a8af9064d34c582?source=copy_link` |
 | Documentation | dossier [`docs/`](docs) |
 
@@ -23,7 +23,7 @@ Projet réalisé par FastDev.
 | Base relationnelle | MySQL 8 / MariaDB |
 | Base NoSQL | MongoDB (statistiques) |
 | Emails | PHPMailer (SMTP) |
-| Déploiement | Fly.io (image Docker) |
+| Hébergement | Alwaysdata (PHP, MySQL) + MongoDB Atlas |
 
 ## Installation en local
 
@@ -34,9 +34,10 @@ git clone https://github.com/valentinfigueiredo/studi-2026-2027-tp-developpeur-w
 cd studi-2026-2027-tp-developpeur-web-et-web-mobile
 composer install
 
-# Base de données (création, données de démonstration, utilisateur applicatif)
-mysql -u root -p < database/01_schema.sql
-mysql -u root -p < database/02_data.sql
+# Base de données (création, tables, données de démonstration, utilisateur applicatif)
+mysql -u root -p -e "CREATE DATABASE vite_gourmand CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+mysql -u root -p vite_gourmand < database/01_schema.sql
+mysql -u root -p vite_gourmand < database/02_data.sql
 mysql -u root -p < database/03_droits.sql
 
 # Configuration
@@ -71,15 +72,12 @@ Sans serveur SMTP configuré (`MAIL_HOST` vide), les emails sont enregistrés da
 ├── src/                  Classes métier et techniques (namespace App)
 ├── database/             Scripts SQL : structure, données, droits
 ├── bin/sync-mongo.php    Reconstruction des statistiques MongoDB
-├── docs/                 Documentation (conception, technique, projet, PDF)
-├── docker/               Configuration Apache (image Fly.io)
-├── Dockerfile            Image de production (Fly.io)
-└── fly.toml              Configuration du déploiement Fly.io
+└── docs/                 Documentation (conception, technique, projet, PDF)
 ```
 
 ## Déploiement
 
-Le déploiement sur Fly.io est détaillé dans [`docs/04_deploiement.md`](docs/04_deploiement.md).
+Le déploiement sur Alwaysdata est détaillé dans [`docs/04_deploiement.md`](docs/04_deploiement.md).
 
 ## Git : organisation des branches
 

@@ -20,7 +20,7 @@
 | Graphiques | **Chart.js** | D3.js | Simple, léger, suffisant pour un graphique en barres. |
 | Emails | **PHPMailer + SMTP** | fonction `mail()` | `mail()` est peu fiable (souvent classé en spam). PHPMailer gère le SMTP authentifié et chiffré (TLS). |
 | Adresses | **API Adresse (data.gouv.fr)** | Google Maps | Gratuite, sans clé, données officielles françaises. Sert à l'autocomplétion de l'adresse et au calcul des frais de livraison. |
-| Hébergement | **Fly.io + Docker** | Heroku, Vercel, Azure | Fly.io exécute un conteneur Docker (identique en local et en production), propose une région à Paris et un HTTPS automatique. Vercel n'est pas adapté à PHP. |
+| Hébergement | **Alwaysdata + MongoDB Atlas** | Fly.io, Heroku, Vercel, InfinityFree | Alwaysdata est un hébergeur français (serveurs en France, RGPD) dont l'offre gratuite fournit PHP 8.3, MySQL/MariaDB, un accès SSH (Git, Composer) et le HTTPS automatique. MongoDB est hébergé sur l'offre gratuite M0 d'Atlas. Fly.io et Heroku sont payants dès la première machine, Vercel n'est pas adapté à PHP, et les hébergeurs PHP gratuits classiques (InfinityFree) n'offrent ni MongoDB ni SSH. |
 
 ## 2. Configuration de l'environnement de travail
 
@@ -175,11 +175,11 @@ sequenceDiagram
 | **Accès non autorisé** | Rôles vérifiés au niveau du routeur ; rôle imposé côté serveur à l'inscription ; aucun formulaire ne crée d'administrateur ; compte désactivé = session coupée à la requête suivante | `index.php`, `Auth::refresh` |
 | **IDOR** (accès à la commande d'un autre) | Chaque requête client filtre aussi sur `utilisateur_id` de la session | `CommandeService::trouver` |
 | **Open redirect** | Le paramètre `redirect` n'accepte qu'un chemin interne | `safe_redirect_target()` |
-| **Upload malveillant** | Type réel vérifié (`finfo` + `getimagesize`), taille ≤ 2 Mo, nom aléatoire, exécution PHP désactivée dans le dossier d'upload (Apache) | `Upload.php`, `docker/apache.conf` |
+| **Upload malveillant** | Type réel vérifié (`finfo` + `getimagesize`), taille ≤ 2 Mo, nom aléatoire, exécution de scripts interdite dans le dossier d'upload (Apache) | `Upload.php`, `uploads/.htaccess` |
 | **Réinitialisation du mot de passe** | Jeton de 256 bits, seul son hash SHA-256 est stocké, expiration 1 h, usage unique, même réponse que l'email existe ou non | `mot-de-passe-oublie.php` |
-| **Fuite d'informations** | Erreurs masquées en production (journalisées seulement), en-têtes `Server` et `X-Powered-By` masqués, `.env` et code hors du dossier web | `bootstrap.php`, `Dockerfile` |
-| **Données en transit** | HTTPS forcé (`force_https`), en-tête HSTS | `fly.toml`, `bootstrap.php` |
-| **Privilèges en base** | Utilisateur MySQL applicatif limité à `SELECT/INSERT/UPDATE/DELETE` (pas de `DROP`/`ALTER`) | `03_droits.sql` |
+| **Fuite d'informations** | Erreurs masquées en production (journalisées seulement), en-tête `X-Powered-By` supprimé, `.env` et code hors du dossier web (seul `public/` est exposé), listage des dossiers désactivé | `bootstrap.php`, `public/.htaccess` |
+| **Données en transit** | HTTPS forcé (redirection HTTP → HTTPS activée sur le site Alwaysdata), en-tête HSTS, connexion TLS à MongoDB Atlas | Alwaysdata, `bootstrap.php` |
+| **Privilèges en base** | En local, utilisateur MySQL applicatif limité à `SELECT/INSERT/UPDATE/DELETE` (pas de `DROP`/`ALTER`). Chez Alwaysdata, l'utilisateur n'a accès qu'à la base de l'application | `03_droits.sql` |
 | **Intégrité des données** | Transactions (commande + stock + suivi), verrou `FOR UPDATE` sur le stock, contraintes `CHECK` et clés étrangères | `CommandeService`, `01_schema.sql` |
 | **Librairies externes compromises** | Attribut `integrity` (SRI) sur Bootstrap et Chart.js chargés depuis le CDN | `layout.php` |
 | **Spam du formulaire de contact** | Champ « pot de miel » invisible | `contact.php` |

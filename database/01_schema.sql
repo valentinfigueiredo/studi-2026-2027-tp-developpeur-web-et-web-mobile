@@ -5,12 +5,30 @@
 --  Moteur : InnoDB (clés étrangères + transactions)
 -- =====================================================================
 
-DROP DATABASE IF EXISTS vite_gourmand;
-CREATE DATABASE vite_gourmand
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
+-- Le script s'exécute dans la base sélectionnée à la connexion (ex : mysql ... vite_gourmand < 01_schema.sql).
+-- Il ne crée pas la base lui-même : chez Alwaysdata, la base est créée depuis l'interface
+-- et son nom est préfixé par le nom du compte.
+-- Relancer ce script supprime et recrée toutes les tables.
 
-USE vite_gourmand;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS tentative_connexion;
+DROP TABLE IF EXISTS avis;
+DROP TABLE IF EXISTS suivi_commande;
+DROP TABLE IF EXISTS commande;
+DROP TABLE IF EXISTS horaire;
+DROP TABLE IF EXISTS plat_allergene;
+DROP TABLE IF EXISTS allergene;
+DROP TABLE IF EXISTS menu_plat;
+DROP TABLE IF EXISTS plat;
+DROP TABLE IF EXISTS menu_image;
+DROP TABLE IF EXISTS menu;
+DROP TABLE IF EXISTS regime;
+DROP TABLE IF EXISTS theme;
+DROP TABLE IF EXISTS reinitialisation_mdp;
+DROP TABLE IF EXISTS utilisateur;
+DROP TABLE IF EXISTS role;
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- ---------------------------------------------------------------------
 --  1. Utilisateurs et rôles
@@ -21,7 +39,7 @@ USE vite_gourmand;
 CREATE TABLE role (
     role_id   INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     libelle   VARCHAR(50) NOT NULL UNIQUE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE utilisateur (
     utilisateur_id  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -39,7 +57,7 @@ CREATE TABLE utilisateur (
     date_creation   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_utilisateur_role
         FOREIGN KEY (role_id) REFERENCES role(role_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Jetons de réinitialisation du mot de passe ("mot de passe oublié").
 -- On stocke le HASH du jeton (comme un mot de passe) : si la base fuite,
@@ -53,7 +71,7 @@ CREATE TABLE reinitialisation_mdp (
     CONSTRAINT fk_reinit_utilisateur
         FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(utilisateur_id)
         ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
 --  2. Menus, plats, allergènes
@@ -62,12 +80,12 @@ CREATE TABLE reinitialisation_mdp (
 CREATE TABLE theme (
     theme_id  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     libelle   VARCHAR(50) NOT NULL UNIQUE            -- Noël, Pâques, Classique, Événement
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE regime (
     regime_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     libelle   VARCHAR(50) NOT NULL UNIQUE            -- Végétarien, Vegan, Classique, Sans gluten...
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE menu (
     menu_id                 INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -85,7 +103,7 @@ CREATE TABLE menu (
     CONSTRAINT fk_menu_regime FOREIGN KEY (regime_id) REFERENCES regime(regime_id),
     CONSTRAINT chk_menu_personnes CHECK (nombre_personne_minimum >= 1),
     CONSTRAINT chk_menu_prix      CHECK (prix_par_personne > 0)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Galerie d'images d'un menu (1 menu -> N images).
 CREATE TABLE menu_image (
@@ -96,14 +114,14 @@ CREATE TABLE menu_image (
     ordre         TINYINT UNSIGNED NOT NULL DEFAULT 0,
     CONSTRAINT fk_image_menu
         FOREIGN KEY (menu_id) REFERENCES menu(menu_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE plat (
     plat_id     INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     titre_plat  VARCHAR(150) NOT NULL,
     type_plat   ENUM('entree', 'plat', 'dessert') NOT NULL,
     description TEXT NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Un plat peut être dans plusieurs menus, un menu contient plusieurs plats (N-N).
 CREATE TABLE menu_plat (
@@ -112,12 +130,12 @@ CREATE TABLE menu_plat (
     PRIMARY KEY (menu_id, plat_id),
     CONSTRAINT fk_menuplat_menu FOREIGN KEY (menu_id) REFERENCES menu(menu_id) ON DELETE CASCADE,
     CONSTRAINT fk_menuplat_plat FOREIGN KEY (plat_id) REFERENCES plat(plat_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE allergene (
     allergene_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     libelle      VARCHAR(100) NOT NULL UNIQUE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Un plat a plusieurs allergènes, un allergène concerne plusieurs plats (N-N).
 CREATE TABLE plat_allergene (
@@ -126,7 +144,7 @@ CREATE TABLE plat_allergene (
     PRIMARY KEY (plat_id, allergene_id),
     CONSTRAINT fk_platall_plat      FOREIGN KEY (plat_id)      REFERENCES plat(plat_id)      ON DELETE CASCADE,
     CONSTRAINT fk_platall_allergene FOREIGN KEY (allergene_id) REFERENCES allergene(allergene_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
 --  3. Horaires (affichés dans le pied de page, modifiables par un employé)
@@ -138,7 +156,7 @@ CREATE TABLE horaire (
     heure_ouverture TIME NULL,
     heure_fermeture TIME NULL,
     ferme           BOOLEAN NOT NULL DEFAULT FALSE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
 --  4. Commandes et suivi
@@ -188,7 +206,7 @@ CREATE TABLE commande (
         OR (annulee_par = 'client'  AND motif_annulation IS NOT NULL)
         OR (annulee_par = 'employe' AND motif_annulation IS NOT NULL AND mode_contact IS NOT NULL)
     )
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Historique des changements de statut = "suivi de commande" côté client.
 CREATE TABLE suivi_commande (
@@ -199,7 +217,7 @@ CREATE TABLE suivi_commande (
     modifie_par       INT UNSIGNED NULL,               -- employé/admin ayant fait le changement
     CONSTRAINT fk_suivi_commande FOREIGN KEY (commande_id) REFERENCES commande(commande_id) ON DELETE CASCADE,
     CONSTRAINT fk_suivi_employe  FOREIGN KEY (modifie_par) REFERENCES utilisateur(utilisateur_id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
 --  5. Avis clients
@@ -218,7 +236,7 @@ CREATE TABLE avis (
     CONSTRAINT fk_avis_commande    FOREIGN KEY (commande_id)    REFERENCES commande(commande_id) ON DELETE CASCADE,
     CONSTRAINT fk_avis_utilisateur FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(utilisateur_id),
     CONSTRAINT chk_avis_note CHECK (note BETWEEN 1 AND 5)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
 --  6. Index pour accélérer les filtres
@@ -242,4 +260,4 @@ CREATE TABLE tentative_connexion (
     ip              VARCHAR(45) NOT NULL,              -- 45 caractères pour une IPv6
     date_tentative  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_tentative_email_date (email, date_tentative)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

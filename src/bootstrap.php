@@ -24,7 +24,7 @@ error_reporting(E_ALL);
 function is_https(): bool
 {
     return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'; // derrière le proxy de Fly.io
+        || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'; // derrière un proxy HTTPS
 }
 
 if (PHP_SAPI !== 'cli') {
@@ -42,7 +42,8 @@ if (PHP_SAPI !== 'cli') {
     ini_set('session.use_only_cookies', '1');
     session_start();
 
-    // En-têtes de sécurité HTTP
+    // En-têtes de sécurité HTTP (et suppression de celui qui révèle la version de PHP)
+    header_remove('X-Powered-By');
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');

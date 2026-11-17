@@ -7,7 +7,7 @@ namespace App;
 /**
  * Lecture de la configuration depuis les variables d'environnement.
  * En local, elles sont chargées depuis le fichier .env (jamais versionné : il contient des secrets).
- * En production (Fly.io), elles sont définies avec `fly secrets set`.
+ * En production (Alwaysdata), le fichier .env est créé directement sur le serveur, hors du dossier public/.
  */
 final class Env
 {

@@ -7,7 +7,7 @@
         Responsables de la publication : Julie Moreau et José Garcia.</p>
 
     <h2>Conception et hébergement</h2>
-    <p>Site conçu par FastDev. Hébergé par Fly.io (Fly.io, Inc., 321 N Clark St, Chicago, IL 60654, États-Unis), région Paris (cdg).</p>
+    <p>Site conçu par FastDev. Hébergé par Alwaysdata (SAS Alwaysdata, 91 rue du Faubourg Saint-Honoré, 75008 Paris, France).</p>
 
     <h2 id="donnees">Protection des données personnelles (RGPD)</h2>
     <p><strong>Données collectées :</strong> nom, prénom, email, téléphone, adresse postale, et informations de commande.</p>

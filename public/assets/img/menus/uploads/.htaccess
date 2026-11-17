@@ -1,0 +1,7 @@
+# Dossier des images envoyées : aucun script ne peut y être exécuté,
+# même si un fichier malveillant passait les contrôles d'upload (défense en profondeur)
+Options -ExecCGI -Indexes
+RemoveHandler .php .phtml .phar
+<FilesMatch "\.(php|phtml|phar|php\d|cgi|pl|py|sh)$">
+    Require all denied
+</FilesMatch>
