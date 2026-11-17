@@ -10,7 +10,7 @@ Projet réalisé par FastDev.
 
 | | |
 |---|---|
-| Application en ligne | `https://vite-et-gourmand.fly.dev`|
+| Application en ligne | `https://vite-et-gourmand-valentin-figueiredo.fly.dev`|
 | Gestion de projet | `https://app.notion.com/p/notion-vite-gourmand-41b1da97a823800f9a8af9064d34c582?source=copy_link` |
 | Documentation | dossier [`docs/`](docs) |
 

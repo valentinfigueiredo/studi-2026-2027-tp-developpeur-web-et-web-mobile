@@ -1,5 +1,5 @@
 # Configuration de déploiement Fly.io (https://fly.io/docs/reference/configuration/)
-app = "vite-et-gourmand"
+app = "vite-et-gourmand-valentin-figueiredo"
 primary_region = "cdg"   # Paris : au plus près des clients bordelais
 
 [build]
